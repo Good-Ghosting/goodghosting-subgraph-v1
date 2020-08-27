@@ -1,0 +1,17 @@
+type Game @entity {
+id: ID!
+totalGamePrincipal: BigInt!
+totalGameInterest: BigInt!
+redeemed: Boolean!
+withdrawAmountAllocated: Boolean!
+players: [Player!]!
+winners: [Player!]!
+}
+
+type Player @entity {
+id: ID!
+address: Bytes!
+mostRecentSegmentPaid:  BigInt!
+amountPaid:  BigInt!
+withdrawAmount:  BigInt!
+}

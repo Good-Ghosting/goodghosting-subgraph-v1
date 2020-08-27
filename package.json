@@ -1,24 +1,16 @@
 {
-  "name": "sample",
-  "version": "0.1.0",
+  "name": "GoodGhosting",
+  "license": "UNLICENSED",
   "scripts": {
-    "build-contract": "solc contracts/Gravity.sol --abi -o abis --overwrite && solc contracts/Gravity.sol --bin -o bin --overwrite",
-    "create": "graph create viraj124/sample --node https://api.thegraph.com/deploy/",
-    "create-local": "graph create viraj124/sample --node http://127.0.0.1:8020",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy viraj124/sample --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-local": "graph deploy viraj124/sample --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
-  },
-  "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.18.0",
-    "@graphprotocol/graph-ts": "^0.18.0"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ Good-Ghosting/GoodGhosting",
+    "create-local": "graph create --node http://localhost:8020/ Good-Ghosting/GoodGhosting",
+    "remove-local": "graph remove --node http://localhost:8020/ Good-Ghosting/GoodGhosting",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Good-Ghosting/GoodGhosting"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0",
-    "truffle": "^5.0.4",
-    "truffle-contract": "^4.0.5",
-    "truffle-hdwallet-provider": "^1.0.4"
+    "@graphprotocol/graph-cli": "0.18.0",
+    "@graphprotocol/graph-ts": "0.18.0"
   }
 }

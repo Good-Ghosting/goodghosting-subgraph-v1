@@ -1,48 +1,57 @@
-import { NewGravatar, UpdatedGravatar } from '../generated/Gravity/Gravity'
-import { Player, Game } from '../generated/schema'
-
-
+import { BigInt } from "@graphprotocol/graph-ts"
+import {
+  Contract,
+  Deposit,
+  FundsRedeemedFromExternalPool,
+  JoinedGame,
+  OwnershipTransferred,
+  Paused,
+  Unpaused,
+  WinnersAnnouncement,
+  Withdrawal
+} from "../generated/Contract/Contract"
+import { Player, Game } from "../generated/schema"
 
 export function handleJoinGame(event: JoinedGame): void {
-    let contract = GoodGhosting.bind(event.address);
+    let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
     player.address = address
     player.mostRecentSegmentPaid = contract.getCurrentSegment()
     player.amountPaid = event.params.amount
-    player.withdrawAmount = BigInt(0)
+    player.withdrawAmount = BigInt.fromI32(0);
 
-    let admin = contract.admin()
-    let game = Game.load(admin.toHex())
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
 
     if (game == null) {
-      game = new Game(admin.toHex())
+      game = new Game(admin)
       game.players = new Array<string>();
       game.totalGamePrincipal = event.params.amount
-      game.totalGameInterest = BigInt(0)
+      game.totalGameInterest = BigInt.fromI32(0);
       game.winners = new Array<string>();
       game.redeemed = false
       game.withdrawAmountAllocated = false
     }
-    game.totalGamePrincipal = game.totalGamePrincipal.add(event.params.amount)
+    game.totalGamePrincipal = contract.totalGamePrincipal()
     let players = game.players
-    players.push(player)
-    game.players = player
+    players.push(player.id)
+    game.players = players
    
     game.save()
     player.save()
 }
 
 export function handleDeposit(event: Deposit): void {
-    let contract = GoodGhosting.bind(event.address);
+    let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = Player.load(address.toHex())
     player.mostRecentSegmentPaid = event.params.segment
-    player.amountPaid = player.amountPaid.add(event.params.amount)
+    player.amountPaid = player.amountPaid + event.params.amount
 
-    let admin = contract.admin()
-    let game = Game.load(admin.toHex())
-    game.totalGamePrincipal = game.totalGamePrincipal.add(event.params.amount)
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
+    game.totalGamePrincipal = contract.totalGamePrincipal()
     game.save()
     player.save()
 }
@@ -52,10 +61,10 @@ export function handleDeposit(event: Deposit): void {
 
 
 export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
-    let contract = GoodGhosting.bind(event.address);
+    let contract = Contract.bind(event.address);
     
-    let admin = contract.admin()
-    let game = Game.load(admin.toHex())
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
     game.totalGamePrincipal = event.params.totalGamePrincipal
     game.totalGameInterest = event.params.totalGameInterest
     game.redeemed = true
@@ -66,14 +75,14 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
 
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
-    let contract = GoodGhosting.bind(event.address);
-    let admin = contract.admin()
-    let game = Game.load(admin.toHex())
+    let contract = Contract.bind(event.address);
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
     let gameWinners = game.winners
-    let winners = event.param.winners
+    let winners = event.params.winners
     for(var i = 0; i < winners.length; i ++) {
       let player = Player.load(winners[i].toHex())
-      gameWinners.push(player)
+      gameWinners.push(player.id)
     }    
     game.winners = gameWinners
     game.withdrawAmountAllocated = true
@@ -83,12 +92,17 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
 
 
 export function handleWithdrawal(event: Withdrawal): void {
-    let contract = GoodGhosting.bind(event.address);
+    let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
     
     player.withdrawAmount = event.params.amount
-
-  
     player.save()
 }
+
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+
+export function handlePaused(event: Paused): void {}
+
+export function handleUnpaused(event: Unpaused): void {}
+

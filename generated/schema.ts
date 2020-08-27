@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Gravatar extends Entity {
+export class Game extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class Gravatar extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Gravatar entity without an ID");
+    assert(id !== null, "Cannot save Game entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Gravatar entity with non-string ID. " +
+      "Cannot save Game entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Gravatar", id.toString(), this);
+    store.set("Game", id.toString(), this);
   }
 
-  static load(id: string): Gravatar | null {
-    return store.get("Gravatar", id) as Gravatar | null;
+  static load(id: string): Game | null {
+    return store.get("Game", id) as Game | null;
   }
 
   get id(): string {
@@ -42,30 +42,124 @@ export class Gravatar extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get owner(): Bytes {
-    let value = this.get("owner");
+  get totalGamePrincipal(): BigInt {
+    let value = this.get("totalGamePrincipal");
+    return value.toBigInt();
+  }
+
+  set totalGamePrincipal(value: BigInt) {
+    this.set("totalGamePrincipal", Value.fromBigInt(value));
+  }
+
+  get totalGameInterest(): BigInt {
+    let value = this.get("totalGameInterest");
+    return value.toBigInt();
+  }
+
+  set totalGameInterest(value: BigInt) {
+    this.set("totalGameInterest", Value.fromBigInt(value));
+  }
+
+  get redeemed(): boolean {
+    let value = this.get("redeemed");
+    return value.toBoolean();
+  }
+
+  set redeemed(value: boolean) {
+    this.set("redeemed", Value.fromBoolean(value));
+  }
+
+  get withdrawAmountAllocated(): boolean {
+    let value = this.get("withdrawAmountAllocated");
+    return value.toBoolean();
+  }
+
+  set withdrawAmountAllocated(value: boolean) {
+    this.set("withdrawAmountAllocated", Value.fromBoolean(value));
+  }
+
+  get players(): Array<string> {
+    let value = this.get("players");
+    return value.toStringArray();
+  }
+
+  set players(value: Array<string>) {
+    this.set("players", Value.fromStringArray(value));
+  }
+
+  get winners(): Array<string> {
+    let value = this.get("winners");
+    return value.toStringArray();
+  }
+
+  set winners(value: Array<string>) {
+    this.set("winners", Value.fromStringArray(value));
+  }
+}
+
+export class Player extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Player entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Player entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Player", id.toString(), this);
+  }
+
+  static load(id: string): Player | null {
+    return store.get("Player", id) as Player | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
     return value.toBytes();
   }
 
-  set owner(value: Bytes) {
-    this.set("owner", Value.fromBytes(value));
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
   }
 
-  get displayName(): string {
-    let value = this.get("displayName");
-    return value.toString();
+  get mostRecentSegmentPaid(): BigInt {
+    let value = this.get("mostRecentSegmentPaid");
+    return value.toBigInt();
   }
 
-  set displayName(value: string) {
-    this.set("displayName", Value.fromString(value));
+  set mostRecentSegmentPaid(value: BigInt) {
+    this.set("mostRecentSegmentPaid", Value.fromBigInt(value));
   }
 
-  get imageUrl(): string {
-    let value = this.get("imageUrl");
-    return value.toString();
+  get amountPaid(): BigInt {
+    let value = this.get("amountPaid");
+    return value.toBigInt();
   }
 
-  set imageUrl(value: string) {
-    this.set("imageUrl", Value.fromString(value));
+  set amountPaid(value: BigInt) {
+    this.set("amountPaid", Value.fromBigInt(value));
+  }
+
+  get withdrawAmount(): BigInt {
+    let value = this.get("withdrawAmount");
+    return value.toBigInt();
+  }
+
+  set withdrawAmount(value: BigInt) {
+    this.set("withdrawAmount", Value.fromBigInt(value));
   }
 }
