@@ -1,13 +1,13 @@
 {
-  "name": "GoodGhosting",
+  "name": "GoodGhostingSept",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ Good-Ghosting/GoodGhosting",
-    "create-local": "graph create --node http://localhost:8020/ Good-Ghosting/GoodGhosting",
-    "remove-local": "graph remove --node http://localhost:8020/ Good-Ghosting/GoodGhosting",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Good-Ghosting/GoodGhosting"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ Good-Ghosting/GoodGhostingSept",
+    "create-local": "graph create --node http://localhost:8020/ Good-Ghosting/GoodGhostingSept",
+    "remove-local": "graph remove --node http://localhost:8020/ Good-Ghosting/GoodGhostingSept",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Good-Ghosting/GoodGhostingSept"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",

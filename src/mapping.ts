@@ -10,10 +10,35 @@ import {
   WinnersAnnouncement,
   Withdrawal
 } from "../generated/Contract/Contract"
-import { Player, Game } from "../generated/schema"
+import {  Player, Game } from "../generated/schema"
 
-export function handleJoinGame(event: JoinedGame): void {
-    let contract = Contract.bind(event.address);
+export function handleDeposit(event: Deposit): void {
+  let contract = Contract.bind(event.address);
+    let address = event.params.player
+    let player = Player.load(address.toHex())
+    player.mostRecentSegmentPaid = event.params.segment
+    player.amountPaid = player.amountPaid + event.params.amount
+
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
+    game.totalGamePrincipal = contract.totalGamePrincipal()
+    game.save()
+    player.save()
+}
+
+export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
+ let contract = Contract.bind(event.address);
+    
+    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+    let game = Game.load(admin)
+    game.totalGamePrincipal = event.params.totalGamePrincipal
+    game.totalGameInterest = event.params.totalGameInterest
+    game.redeemed = true
+    game.save()
+}
+
+export function handleJoinedGame(event: JoinedGame): void {
+  let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
     player.address = address
@@ -42,40 +67,14 @@ export function handleJoinGame(event: JoinedGame): void {
     player.save()
 }
 
-export function handleDeposit(event: Deposit): void {
-    let contract = Contract.bind(event.address);
-    let address = event.params.player
-    let player = Player.load(address.toHex())
-    player.mostRecentSegmentPaid = event.params.segment
-    player.amountPaid = player.amountPaid + event.params.amount
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
-    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-    let game = Game.load(admin)
-    game.totalGamePrincipal = contract.totalGamePrincipal()
-    game.save()
-    player.save()
-}
+export function handlePaused(event: Paused): void {}
 
-
-
-
-
-export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
-    let contract = Contract.bind(event.address);
-    
-    let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-    let game = Game.load(admin)
-    game.totalGamePrincipal = event.params.totalGamePrincipal
-    game.totalGameInterest = event.params.totalGameInterest
-    game.redeemed = true
-    game.save()
-}
-
-
-
+export function handleUnpaused(event: Unpaused): void {}
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
-    let contract = Contract.bind(event.address);
+ let contract = Contract.bind(event.address);
     let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
     let game = Game.load(admin)
     let gameWinners = game.winners
@@ -89,20 +88,11 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
     game.save()
 }
 
-
-
 export function handleWithdrawal(event: Withdrawal): void {
-    let contract = Contract.bind(event.address);
+ let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
     
     player.withdrawAmount = event.params.amount
     player.save()
 }
-
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
-
-export function handlePaused(event: Paused): void {}
-
-export function handleUnpaused(event: Unpaused): void {}
-
