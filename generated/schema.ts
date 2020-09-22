@@ -42,6 +42,33 @@ export class Game extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get firstSegmentStart(): BigInt {
+    let value = this.get("firstSegmentStart");
+    return value.toBigInt();
+  }
+
+  set firstSegmentStart(value: BigInt) {
+    this.set("firstSegmentStart", Value.fromBigInt(value));
+  }
+
+  get segmentLength(): BigInt {
+    let value = this.get("segmentLength");
+    return value.toBigInt();
+  }
+
+  set segmentLength(value: BigInt) {
+    this.set("segmentLength", Value.fromBigInt(value));
+  }
+
+  get currentSegment(): BigInt {
+    let value = this.get("currentSegment");
+    return value.toBigInt();
+  }
+
+  set currentSegment(value: BigInt) {
+    this.set("currentSegment", Value.fromBigInt(value));
+  }
+
   get totalGamePrincipal(): BigInt {
     let value = this.get("totalGamePrincipal");
     return value.toBigInt();

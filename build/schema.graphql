@@ -1,5 +1,8 @@
 type Game @entity {
 id: ID!
+firstSegmentStart: BigInt!
+segmentLength: BigInt!
+currentSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 redeemed: Boolean!
