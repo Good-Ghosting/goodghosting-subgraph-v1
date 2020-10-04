@@ -286,21 +286,6 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getPlayers(): Array<Address> {
-    let result = super.call("getPlayers", "getPlayers():(address[])", []);
-
-    return result[0].toAddressArray();
-  }
-
-  try_getPlayers(): ethereum.CallResult<Array<Address>> {
-    let result = super.tryCall("getPlayers", "getPlayers():(address[])", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddressArray());
-  }
-
   iterablePlayers(param0: BigInt): Address {
     let result = super.call(
       "iterablePlayers",
