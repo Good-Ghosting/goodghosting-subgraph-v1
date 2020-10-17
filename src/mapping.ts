@@ -60,6 +60,7 @@ export function handleJoinedGame(event: JoinedGame): void {
       game.firstSegmentStart = contract.firstSegmentStart()
       game.segmentLength = contract.segmentLength()
       game.redeemed = false
+      game.lastSegment = contract.lastSegment()
       game.withdrawAmountAllocated = false
     }
     game.currentSegment = contract.getCurrentSegment()

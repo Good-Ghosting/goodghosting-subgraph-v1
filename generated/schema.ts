@@ -69,6 +69,15 @@ export class Game extends Entity {
     this.set("currentSegment", Value.fromBigInt(value));
   }
 
+  get lastSegment(): BigInt {
+    let value = this.get("lastSegment");
+    return value.toBigInt();
+  }
+
+  set lastSegment(value: BigInt) {
+    this.set("lastSegment", Value.fromBigInt(value));
+  }
+
   get totalGamePrincipal(): BigInt {
     let value = this.get("totalGamePrincipal");
     return value.toBigInt();

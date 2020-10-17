@@ -3,6 +3,7 @@ id: ID!
 firstSegmentStart: BigInt!
 segmentLength: BigInt!
 currentSegment: BigInt!
+lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 redeemed: Boolean!
