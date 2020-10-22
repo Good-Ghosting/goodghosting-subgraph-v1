@@ -18,4 +18,5 @@ address: Bytes!
 mostRecentSegmentPaid:  BigInt!
 amountPaid:  BigInt!
 withdrawAmount:  BigInt!
+withdrawn: Boolean!
 }

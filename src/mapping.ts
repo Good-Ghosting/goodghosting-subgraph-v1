@@ -47,7 +47,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     player.mostRecentSegmentPaid = contract.getCurrentSegment()
     player.amountPaid = event.params.amount
     player.withdrawAmount = BigInt.fromI32(0);
-
+    player.withdrawn = false;
     let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
     let game = Game.load(admin)
 
@@ -97,7 +97,7 @@ export function handleWithdrawal(event: Withdrawal): void {
  let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
-    
+    player.withdrawn = true;
     player.withdrawAmount = event.params.amount
     player.save()
 }

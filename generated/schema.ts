@@ -198,4 +198,13 @@ export class Player extends Entity {
   set withdrawAmount(value: BigInt) {
     this.set("withdrawAmount", Value.fromBigInt(value));
   }
+
+  get withdrawn(): boolean {
+    let value = this.get("withdrawn");
+    return value.toBoolean();
+  }
+
+  set withdrawn(value: boolean) {
+    this.set("withdrawn", Value.fromBoolean(value));
+  }
 }
