@@ -7,11 +7,6 @@
         "type": "address"
       },
       {
-        "internalType": "contract AToken",
-        "name": "_interestCurrency",
-        "type": "address"
-      },
-      {
         "internalType": "contract ILendingPoolAddressesProvider",
         "name": "_lendingPoolAddressProvider",
         "type": "address"
@@ -29,6 +24,11 @@
       {
         "internalType": "uint256",
         "name": "_segmentPayment",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fee",
         "type": "uint256"
       }
     ],
@@ -58,6 +58,25 @@
       }
     ],
     "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "EmergencyWithdrawal",
     "type": "event"
   },
   {
@@ -196,19 +215,32 @@
   },
   {
     "inputs": [],
-    "name": "allocateWithdrawAmounts",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "daiToken",
     "outputs": [
       {
         "internalType": "contract IERC20",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -348,6 +380,11 @@
         "type": "address"
       },
       {
+        "internalType": "bool",
+        "name": "withdrawn",
+        "type": "bool"
+      },
+      {
         "internalType": "uint256",
         "name": "mostRecentSegmentPaid",
         "type": "uint256"
@@ -355,11 +392,6 @@
       {
         "internalType": "uint256",
         "name": "amountPaid",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "withdrawAmount",
         "type": "uint256"
       }
     ],
@@ -489,19 +521,6 @@
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "withdrawAmountAllocated",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]

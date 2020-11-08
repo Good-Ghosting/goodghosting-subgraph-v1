@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0x33d5da3b407a43aff18fca6bf8cdb1d54abbe95e"
+      address: "0xcca7f130146dba07a1ff3b654fa1731e0f66a40a"
       abi: Contract
       startBlock: 21641253
     mapping:
@@ -42,4 +42,6 @@ dataSources:
           handler: handleWinnersAnnouncement
         - event: Withdrawal(indexed address,uint256)
           handler: handleWithdrawal
+        - event: EmergencyWithdrawal(indexed address,uint256)
+          handler: handleEmergencyWithdrawal
       file: Contract/Contract.wasm

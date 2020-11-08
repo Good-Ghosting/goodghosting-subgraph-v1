@@ -8,7 +8,8 @@ import {
   Paused,
   Unpaused,
   WinnersAnnouncement,
-  Withdrawal
+  Withdrawal,
+  EmergencyWithdrawal
 } from "../generated/Contract/Contract"
 import {  Player, Game } from "../generated/schema"
 
@@ -94,10 +95,17 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
 }
 
 export function handleWithdrawal(event: Withdrawal): void {
- let contract = Contract.bind(event.address);
     let address = event.params.player
     let player = new Player(address.toHex())
     player.withdrawn = true;
     player.withdrawAmount = event.params.amount
     player.save()
+}
+
+export function handleEmergencyWithdrawal(event: EmergencyWithdrawal): void {
+  let address = event.params.player
+  let player = new Player(address.toHex())
+  player.withdrawn = true;
+  player.withdrawAmount = event.params.amount
+  player.save()
 }

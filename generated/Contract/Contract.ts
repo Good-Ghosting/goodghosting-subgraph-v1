@@ -36,6 +36,28 @@ export class Deposit__Params {
   }
 }
 
+export class EmergencyWithdrawal extends ethereum.Event {
+  get params(): EmergencyWithdrawal__Params {
+    return new EmergencyWithdrawal__Params(this);
+  }
+}
+
+export class EmergencyWithdrawal__Params {
+  _event: EmergencyWithdrawal;
+
+  constructor(event: EmergencyWithdrawal) {
+    this._event = event;
+  }
+
+  get player(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class FundsRedeemedFromExternalPool extends ethereum.Event {
   get params(): FundsRedeemedFromExternalPool__Params {
     return new FundsRedeemedFromExternalPool__Params(this);
@@ -184,11 +206,16 @@ export class Withdrawal__Params {
 
 export class Contract__playersResult {
   value0: Address;
-  value1: BigInt;
+  value1: boolean;
   value2: BigInt;
   value3: BigInt;
 
-  constructor(value0: Address, value1: BigInt, value2: BigInt, value3: BigInt) {
+  constructor(
+    value0: Address,
+    value1: boolean,
+    value2: BigInt,
+    value3: BigInt
+  ) {
     this.value0 = value0;
     this.value1 = value1;
     this.value2 = value2;
@@ -198,7 +225,7 @@ export class Contract__playersResult {
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value1", ethereum.Value.fromBoolean(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     return map;
@@ -238,6 +265,21 @@ export class Contract extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  fee(): BigInt {
+    let result = super.call("fee", "fee():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_fee(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("fee", "fee():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   firstSegmentStart(): BigInt {
@@ -380,13 +422,13 @@ export class Contract extends ethereum.SmartContract {
   players(param0: Address): Contract__playersResult {
     let result = super.call(
       "players",
-      "players(address):(address,uint256,uint256,uint256)",
+      "players(address):(address,bool,uint256,uint256)",
       [ethereum.Value.fromAddress(param0)]
     );
 
     return new Contract__playersResult(
       result[0].toAddress(),
-      result[1].toBigInt(),
+      result[1].toBoolean(),
       result[2].toBigInt(),
       result[3].toBigInt()
     );
@@ -395,7 +437,7 @@ export class Contract extends ethereum.SmartContract {
   try_players(param0: Address): ethereum.CallResult<Contract__playersResult> {
     let result = super.tryCall(
       "players",
-      "players(address):(address,uint256,uint256,uint256)",
+      "players(address):(address,bool,uint256,uint256)",
       [ethereum.Value.fromAddress(param0)]
     );
     if (result.reverted) {
@@ -405,7 +447,7 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Contract__playersResult(
         value[0].toAddress(),
-        value[1].toBigInt(),
+        value[1].toBoolean(),
         value[2].toBigInt(),
         value[3].toBigInt()
       )
@@ -529,29 +571,6 @@ export class Contract extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
-
-  withdrawAmountAllocated(): boolean {
-    let result = super.call(
-      "withdrawAmountAllocated",
-      "withdrawAmountAllocated():(bool)",
-      []
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_withdrawAmountAllocated(): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "withdrawAmountAllocated",
-      "withdrawAmountAllocated():(bool)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {
@@ -575,23 +594,23 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _interestCurrency(): Address {
+  get _lendingPoolAddressProvider(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _lendingPoolAddressProvider(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
   get _segmentCount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get _segmentLength(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get _segmentPayment(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get _fee(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
 }
@@ -604,28 +623,28 @@ export class ConstructorCall__Outputs {
   }
 }
 
-export class AllocateWithdrawAmountsCall extends ethereum.Call {
-  get inputs(): AllocateWithdrawAmountsCall__Inputs {
-    return new AllocateWithdrawAmountsCall__Inputs(this);
+export class EmergencyWithdrawCall extends ethereum.Call {
+  get inputs(): EmergencyWithdrawCall__Inputs {
+    return new EmergencyWithdrawCall__Inputs(this);
   }
 
-  get outputs(): AllocateWithdrawAmountsCall__Outputs {
-    return new AllocateWithdrawAmountsCall__Outputs(this);
+  get outputs(): EmergencyWithdrawCall__Outputs {
+    return new EmergencyWithdrawCall__Outputs(this);
   }
 }
 
-export class AllocateWithdrawAmountsCall__Inputs {
-  _call: AllocateWithdrawAmountsCall;
+export class EmergencyWithdrawCall__Inputs {
+  _call: EmergencyWithdrawCall;
 
-  constructor(call: AllocateWithdrawAmountsCall) {
+  constructor(call: EmergencyWithdrawCall) {
     this._call = call;
   }
 }
 
-export class AllocateWithdrawAmountsCall__Outputs {
-  _call: AllocateWithdrawAmountsCall;
+export class EmergencyWithdrawCall__Outputs {
+  _call: EmergencyWithdrawCall;
 
-  constructor(call: AllocateWithdrawAmountsCall) {
+  constructor(call: EmergencyWithdrawCall) {
     this._call = call;
   }
 }
