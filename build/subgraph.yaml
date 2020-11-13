@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0xcca7f130146dba07a1ff3b654fa1731e0f66a40a"
+      address: "0xaf21934c83013e3eb9ceced636b5cc964d6fb981"
       abi: Contract
-      startBlock: 21641253
+      startBlock: 22082959
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -22,6 +22,7 @@ dataSources:
         - Unpaused
         - WinnersAnnouncement
         - Withdrawal
+        - EmergencyWithdrawal
       abis:
         - name: Contract
           file: Contract/abis/Contract.json
