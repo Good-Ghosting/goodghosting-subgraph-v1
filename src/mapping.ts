@@ -9,7 +9,8 @@ import {
   Unpaused,
   WinnersAnnouncement,
   Withdrawal,
-  EmergencyWithdrawal
+  EarlyWithdrawal,
+  FundsDepositedIntoExternalPool
 } from "../generated/Contract/Contract"
 import {  Player, Game } from "../generated/schema"
 
@@ -56,6 +57,7 @@ export function handleJoinedGame(event: JoinedGame): void {
       game = new Game(admin)
       game.players = new Array<string>();
       game.totalGamePrincipal = event.params.amount
+      game.externalPoolLiquidity = BigInt.fromI32(0);
       game.totalGameInterest = BigInt.fromI32(0);
       game.winners = new Array<string>();
       game.firstSegmentStart = contract.firstSegmentStart()
@@ -102,10 +104,17 @@ export function handleWithdrawal(event: Withdrawal): void {
     player.save()
 }
 
-export function handleEmergencyWithdrawal(event: EmergencyWithdrawal): void {
+export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let address = event.params.player
   let player = new Player(address.toHex())
   player.withdrawn = true;
   player.withdrawAmount = event.params.amount
   player.save()
+}
+
+export function handleFundsDepositedIntoExternalPool(event: FundsDepositedIntoExternalPool): void {
+  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
+  let game = Game.load(admin)
+  game.externalPoolLiquidity = game.externalPoolLiquidity + event.params.amount;
+  game.save()
 }

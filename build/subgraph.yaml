@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0xcca7f130146dba07a1ff3b654fa1731e0f66a40a"
+      address: "0x87cbe89d8f95beecc696c691f3f3d069a6b7ccf8"
       abi: Contract
-      startBlock: 21641253
+      startBlock: 22588242
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -22,6 +22,8 @@ dataSources:
         - Unpaused
         - WinnersAnnouncement
         - Withdrawal
+        - EarlyWithdrawal
+        - FundsDepositedIntoExternalPool
       abis:
         - name: Contract
           file: Contract/abis/Contract.json
@@ -42,6 +44,8 @@ dataSources:
           handler: handleWinnersAnnouncement
         - event: Withdrawal(indexed address,uint256)
           handler: handleWithdrawal
-        - event: EmergencyWithdrawal(indexed address,uint256)
-          handler: handleEmergencyWithdrawal
+        - event: EarlyWithdrawal(indexed address,uint256)
+          handler: handleEarlyWithdrawal
+        - event: FundsDepositedIntoExternalPool(uint256)
+          handler: handleFundsDepositedIntoExternalPool
       file: Contract/Contract.wasm

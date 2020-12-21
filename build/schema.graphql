@@ -6,6 +6,7 @@ currentSegment: BigInt!
 lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
+externalPoolLiquidity: BigInt!
 redeemed: Boolean!
 withdrawAmountAllocated: Boolean!
 players: [Player!]!

@@ -36,16 +36,16 @@ export class Deposit__Params {
   }
 }
 
-export class EmergencyWithdrawal extends ethereum.Event {
-  get params(): EmergencyWithdrawal__Params {
-    return new EmergencyWithdrawal__Params(this);
+export class EarlyWithdrawal extends ethereum.Event {
+  get params(): EarlyWithdrawal__Params {
+    return new EarlyWithdrawal__Params(this);
   }
 }
 
-export class EmergencyWithdrawal__Params {
-  _event: EmergencyWithdrawal;
+export class EarlyWithdrawal__Params {
+  _event: EarlyWithdrawal;
 
-  constructor(event: EmergencyWithdrawal) {
+  constructor(event: EarlyWithdrawal) {
     this._event = event;
   }
 
@@ -55,6 +55,24 @@ export class EmergencyWithdrawal__Params {
 
   get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class FundsDepositedIntoExternalPool extends ethereum.Event {
+  get params(): FundsDepositedIntoExternalPool__Params {
+    return new FundsDepositedIntoExternalPool__Params(this);
+  }
+}
+
+export class FundsDepositedIntoExternalPool__Params {
+  _event: FundsDepositedIntoExternalPool;
+
+  constructor(event: FundsDepositedIntoExternalPool) {
+    this._event = event;
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 }
 
@@ -267,14 +285,22 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  fee(): BigInt {
-    let result = super.call("fee", "fee():(uint256)", []);
+  earlyWithdrawalFee(): BigInt {
+    let result = super.call(
+      "earlyWithdrawalFee",
+      "earlyWithdrawalFee():(uint256)",
+      []
+    );
 
     return result[0].toBigInt();
   }
 
-  try_fee(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("fee", "fee():(uint256)", []);
+  try_earlyWithdrawalFee(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "earlyWithdrawalFee",
+      "earlyWithdrawalFee():(uint256)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -328,6 +354,25 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  isGameCompleted(): boolean {
+    let result = super.call("isGameCompleted", "isGameCompleted():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_isGameCompleted(): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isGameCompleted",
+      "isGameCompleted():(bool)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   iterablePlayers(param0: BigInt): Address {
     let result = super.call(
       "iterablePlayers",
@@ -364,6 +409,21 @@ export class Contract extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  lendingPool(): Address {
+    let result = super.call("lendingPool", "lendingPool():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_lendingPool(): ethereum.CallResult<Address> {
+    let result = super.tryCall("lendingPool", "lendingPool():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   lendingPoolAddressProvider(): Address {
@@ -467,6 +527,29 @@ export class Contract extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  segmentDeposit(param0: BigInt): BigInt {
+    let result = super.call(
+      "segmentDeposit",
+      "segmentDeposit(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_segmentDeposit(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "segmentDeposit",
+      "segmentDeposit(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   segmentLength(): BigInt {
@@ -610,8 +693,12 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[4].value.toBigInt();
   }
 
-  get _fee(): BigInt {
+  get _earlyWithdrawalFee(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
+  }
+
+  get _dataProvider(): Address {
+    return this._call.inputValues[6].value.toAddress();
   }
 }
 
@@ -623,28 +710,54 @@ export class ConstructorCall__Outputs {
   }
 }
 
-export class EmergencyWithdrawCall extends ethereum.Call {
-  get inputs(): EmergencyWithdrawCall__Inputs {
-    return new EmergencyWithdrawCall__Inputs(this);
+export class DepositIntoExternalPoolCall extends ethereum.Call {
+  get inputs(): DepositIntoExternalPoolCall__Inputs {
+    return new DepositIntoExternalPoolCall__Inputs(this);
   }
 
-  get outputs(): EmergencyWithdrawCall__Outputs {
-    return new EmergencyWithdrawCall__Outputs(this);
+  get outputs(): DepositIntoExternalPoolCall__Outputs {
+    return new DepositIntoExternalPoolCall__Outputs(this);
   }
 }
 
-export class EmergencyWithdrawCall__Inputs {
-  _call: EmergencyWithdrawCall;
+export class DepositIntoExternalPoolCall__Inputs {
+  _call: DepositIntoExternalPoolCall;
 
-  constructor(call: EmergencyWithdrawCall) {
+  constructor(call: DepositIntoExternalPoolCall) {
     this._call = call;
   }
 }
 
-export class EmergencyWithdrawCall__Outputs {
-  _call: EmergencyWithdrawCall;
+export class DepositIntoExternalPoolCall__Outputs {
+  _call: DepositIntoExternalPoolCall;
 
-  constructor(call: EmergencyWithdrawCall) {
+  constructor(call: DepositIntoExternalPoolCall) {
+    this._call = call;
+  }
+}
+
+export class EarlyWithdrawCall extends ethereum.Call {
+  get inputs(): EarlyWithdrawCall__Inputs {
+    return new EarlyWithdrawCall__Inputs(this);
+  }
+
+  get outputs(): EarlyWithdrawCall__Outputs {
+    return new EarlyWithdrawCall__Outputs(this);
+  }
+}
+
+export class EarlyWithdrawCall__Inputs {
+  _call: EarlyWithdrawCall;
+
+  constructor(call: EarlyWithdrawCall) {
+    this._call = call;
+  }
+}
+
+export class EarlyWithdrawCall__Outputs {
+  _call: EarlyWithdrawCall;
+
+  constructor(call: EarlyWithdrawCall) {
     this._call = call;
   }
 }
