@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: kovan
+    network: matic
     source:
-      address: "0x87cbe89d8f95beecc696c691f3f3d069a6b7ccf8"
+      address: "0xA7B0b24f5f0F4b7c95355DE341B21A1cDaFBFcAD"
       abi: Contract
-      startBlock: 22588242
+      startBlock: 14462361
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

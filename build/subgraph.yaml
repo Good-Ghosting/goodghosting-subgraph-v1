@@ -4,17 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: kovan
+    network: matic
     source:
-<<<<<<< HEAD
-      address: "0x87cbe89d8f95beecc696c691f3f3d069a6b7ccf8"
+      address: "0xA7B0b24f5f0F4b7c95355DE341B21A1cDaFBFcAD"
       abi: Contract
-      startBlock: 22588242
-=======
-      address: "0x16D1feaC977dFb79a879BD5e5B7Ed37E81C3D660"
-      abi: Contract
-      startBlock: 22143241
->>>>>>> 97162f6b813c223eb400dae27dfccece304872fc
+      startBlock: 14462361
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -28,12 +22,8 @@ dataSources:
         - Unpaused
         - WinnersAnnouncement
         - Withdrawal
-<<<<<<< HEAD
         - EarlyWithdrawal
         - FundsDepositedIntoExternalPool
-=======
-        - EmergencyWithdrawal
->>>>>>> 97162f6b813c223eb400dae27dfccece304872fc
       abis:
         - name: Contract
           file: Contract/abis/Contract.json
