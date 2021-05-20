@@ -35,7 +35,7 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
     let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
     let game = Game.load(admin)
     game.totalGamePrincipal = event.params.totalGamePrincipal
-    game.totalGameInterest += event.params.totalGameInterest
+    game.totalGameInterest = event.params.totalGameInterest
     game.currentSegment = contract.getCurrentSegment()
     game.redeemed = true
     game.save()
@@ -105,14 +105,10 @@ export function handleWithdrawal(event: Withdrawal): void {
 }
 
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
   let address = event.params.player
   let player = new Player(address.toHex())
   player.withdrawn = true;
-  let earlywithdrawFee = player.amountPaid - event.params.amount;
-  game.totalGameInterest += earlywithdrawFee;
-  player.withdrawAmount = event.params.amount;
+  player.withdrawAmount = event.params.amount
   player.save()
 }
 
