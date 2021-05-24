@@ -44,7 +44,7 @@ dataSources:
           handler: handleWinnersAnnouncement
         - event: Withdrawal(indexed address,uint256)
           handler: handleWithdrawal
-        - event: EarlyWithdrawal(indexed address,uint256)
+        - event: EarlyWithdrawal(indexed address,uint256,uint256)
           handler: handleEarlyWithdrawal
         - event: FundsDepositedIntoExternalPool(uint256)
           handler: handleFundsDepositedIntoExternalPool
