@@ -114,7 +114,7 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let address = event.params.player
   let player = new Player(address.toHex())
   player.withdrawn = true;
-  player.amountPaid = BigInt.fromI32(-1);
+  player.mostRecentSegmentPaid = BigInt.fromI32(-1);
   player.withdrawAmount = event.params.amount
   player.save()
 }
