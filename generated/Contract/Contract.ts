@@ -130,6 +130,36 @@ export class FundsRedeemedFromExternalPool__Params {
   get totalGameInterest(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
+
+  get rewards(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class FundsRedeemedFromExternalPool1 extends ethereum.Event {
+  get params(): FundsRedeemedFromExternalPool1__Params {
+    return new FundsRedeemedFromExternalPool1__Params(this);
+  }
+}
+
+export class FundsRedeemedFromExternalPool1__Params {
+  _event: FundsRedeemedFromExternalPool1;
+
+  constructor(event: FundsRedeemedFromExternalPool1) {
+    this._event = event;
+  }
+
+  get totalAmount(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get totalGamePrincipal(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get totalGameInterest(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
 }
 
 export class JoinedGame extends ethereum.Event {

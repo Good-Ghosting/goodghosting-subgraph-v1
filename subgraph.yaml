@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0xA7B0b24f5f0F4b7c95355DE341B21A1cDaFBFcAD"
+      address: "0xd6E7041F8064D6015DfBF18c8A3b3F4B5865d5d8"
       abi: Contract
-      startBlock: 14462361
+      startBlock: 15028305
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -30,7 +30,7 @@ dataSources:
       eventHandlers:
         - event: Deposit(indexed address,indexed uint256,uint256)
           handler: handleDeposit
-        - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256)
+        - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256)
           handler: handleFundsRedeemedFromExternalPool
         - event: JoinedGame(indexed address,uint256)
           handler: handleJoinedGame

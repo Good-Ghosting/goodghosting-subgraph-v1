@@ -38,6 +38,7 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
     game.totalGameInterest = event.params.totalGameInterest
     game.currentSegment = contract.getCurrentSegment()
     game.redeemed = true
+    game.rewards = event.params.rewards;
     game.save()
 }
 
@@ -59,6 +60,7 @@ export function handleJoinedGame(event: JoinedGame): void {
       game.totalGamePrincipal = event.params.amount
       game.externalPoolLiquidity = BigInt.fromI32(0);
       game.totalGameInterest = BigInt.fromI32(0);
+      game.rewards = BigInt.fromI32(0);
       game.winners = new Array<string>();
       game.firstSegmentStart = contract.firstSegmentStart()
       game.segmentLength = contract.segmentLength()
@@ -112,6 +114,7 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let address = event.params.player
   let player = new Player(address.toHex())
   player.withdrawn = true;
+  player.amountPaid = BigInt.fromI32(-1);
   player.withdrawAmount = event.params.amount
   player.save()
 }

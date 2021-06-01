@@ -105,6 +105,15 @@ export class Game extends Entity {
     this.set("externalPoolLiquidity", Value.fromBigInt(value));
   }
 
+  get rewards(): BigInt {
+    let value = this.get("rewards");
+    return value.toBigInt();
+  }
+
+  set rewards(value: BigInt) {
+    this.set("rewards", Value.fromBigInt(value));
+  }
+
   get redeemed(): boolean {
     let value = this.get("redeemed");
     return value.toBoolean();
