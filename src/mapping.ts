@@ -45,7 +45,10 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
 export function handleJoinedGame(event: JoinedGame): void {
   let contract = Contract.bind(event.address);
     let address = event.params.player
-    let player = new Player(address.toHex())
+    let player = Player.load(address.toHex())
+    if (player == null) {
+      player = new Player(address.toHex());
+    }
     player.address = address
     player.mostRecentSegmentPaid = contract.getCurrentSegment()
     player.amountPaid = event.params.amount
@@ -100,7 +103,7 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
 
 export function handleWithdrawal(event: Withdrawal): void {
     let address = event.params.player
-    let player = new Player(address.toHex())
+    let player = Player.load(address.toHex())
     player.withdrawn = true;
     player.withdrawAmount = event.params.amount
     player.save()
@@ -112,11 +115,11 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   game.totalGamePrincipal = event.params.totalGamePrincipal;
   game.save();
   let address = event.params.player
-  let player = new Player(address.toHex())
+  let player = Player.load(address.toHex())
   player.withdrawn = true;
   player.mostRecentSegmentPaid = BigInt.fromI32(-1);
   player.withdrawAmount = event.params.amount
-  player.save()
+  player.save();
 }
 
 export function handleFundsDepositedIntoExternalPool(event: FundsDepositedIntoExternalPool): void {
