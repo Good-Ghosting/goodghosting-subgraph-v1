@@ -21,4 +21,5 @@ mostRecentSegmentPaid:  BigInt!
 amountPaid:  BigInt!
 withdrawAmount:  BigInt!
 withdrawn: Boolean!
+playerRewards: BigInt!
 }

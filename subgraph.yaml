@@ -42,7 +42,7 @@ dataSources:
           handler: handleUnpaused
         - event: WinnersAnnouncement(address[])
           handler: handleWinnersAnnouncement
-        - event: Withdrawal(indexed address,uint256)
+        - event: Withdrawal(indexed address,uint256,uint256)
           handler: handleWithdrawal
         - event: EarlyWithdrawal(indexed address,uint256,uint256)
           handler: handleEarlyWithdrawal
