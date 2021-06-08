@@ -280,32 +280,6 @@ export class Withdrawal__Params {
   get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
-
-  get playerReward(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
-export class Withdrawal1 extends ethereum.Event {
-  get params(): Withdrawal1__Params {
-    return new Withdrawal1__Params(this);
-  }
-}
-
-export class Withdrawal1__Params {
-  _event: Withdrawal1;
-
-  constructor(event: Withdrawal1) {
-    this._event = event;
-  }
-
-  get player(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get amount(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
 }
 
 export class Contract__playersResult {

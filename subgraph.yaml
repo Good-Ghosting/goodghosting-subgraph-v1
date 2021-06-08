@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0xd6E7041F8064D6015DfBF18c8A3b3F4B5865d5d8"
+      address: "0xe714BA43C97A6A760AF76194787f84C8E0c81a48"
       abi: Contract
-      startBlock: 15028305
+      startBlock: 15443978
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -42,7 +42,7 @@ dataSources:
           handler: handleUnpaused
         - event: WinnersAnnouncement(address[])
           handler: handleWinnersAnnouncement
-        - event: Withdrawal(indexed address,uint256,uint256)
+        - event: Withdrawal(indexed address,uint256)
           handler: handleWithdrawal
         - event: EarlyWithdrawal(indexed address,uint256,uint256)
           handler: handleEarlyWithdrawal

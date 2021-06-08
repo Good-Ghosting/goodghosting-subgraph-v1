@@ -105,7 +105,6 @@ export function handleWithdrawal(event: Withdrawal): void {
     let address = event.params.player
     let player = Player.load(address.toHex())
     player.withdrawn = true;
-    player.playerRewards = event.params.playerReward;
     player.withdrawAmount = event.params.amount
     player.save()
 }
