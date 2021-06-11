@@ -280,6 +280,32 @@ export class Withdrawal__Params {
   get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
+
+  get playerReward(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class Withdrawal1 extends ethereum.Event {
+  get params(): Withdrawal1__Params {
+    return new Withdrawal1__Params(this);
+  }
+}
+
+export class Withdrawal1__Params {
+  _event: Withdrawal1;
+
+  constructor(event: Withdrawal1) {
+    this._event = event;
+  }
+
+  get player(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
 }
 
 export class Contract__playersResult {
@@ -940,6 +966,32 @@ export class ConstructorCall__Outputs {
   }
 }
 
+export class AdminFeeWithdrawCall extends ethereum.Call {
+  get inputs(): AdminFeeWithdrawCall__Inputs {
+    return new AdminFeeWithdrawCall__Inputs(this);
+  }
+
+  get outputs(): AdminFeeWithdrawCall__Outputs {
+    return new AdminFeeWithdrawCall__Outputs(this);
+  }
+}
+
+export class AdminFeeWithdrawCall__Inputs {
+  _call: AdminFeeWithdrawCall;
+
+  constructor(call: AdminFeeWithdrawCall) {
+    this._call = call;
+  }
+}
+
+export class AdminFeeWithdrawCall__Outputs {
+  _call: AdminFeeWithdrawCall;
+
+  constructor(call: AdminFeeWithdrawCall) {
+    this._call = call;
+  }
+}
+
 export class DepositIntoExternalPoolCall extends ethereum.Call {
   get inputs(): DepositIntoExternalPoolCall__Inputs {
     return new DepositIntoExternalPoolCall__Inputs(this);
@@ -1078,6 +1130,32 @@ export class PauseCall__Outputs {
   }
 }
 
+export class RedeemFromExternalPoolCall extends ethereum.Call {
+  get inputs(): RedeemFromExternalPoolCall__Inputs {
+    return new RedeemFromExternalPoolCall__Inputs(this);
+  }
+
+  get outputs(): RedeemFromExternalPoolCall__Outputs {
+    return new RedeemFromExternalPoolCall__Outputs(this);
+  }
+}
+
+export class RedeemFromExternalPoolCall__Inputs {
+  _call: RedeemFromExternalPoolCall;
+
+  constructor(call: RedeemFromExternalPoolCall) {
+    this._call = call;
+  }
+}
+
+export class RedeemFromExternalPoolCall__Outputs {
+  _call: RedeemFromExternalPoolCall;
+
+  constructor(call: RedeemFromExternalPoolCall) {
+    this._call = call;
+  }
+}
+
 export class RenounceOwnershipCall extends ethereum.Call {
   get inputs(): RenounceOwnershipCall__Inputs {
     return new RenounceOwnershipCall__Inputs(this);
@@ -1160,32 +1238,6 @@ export class UnpauseCall__Outputs {
   }
 }
 
-export class AdminFeeWithdrawCall extends ethereum.Call {
-  get inputs(): AdminFeeWithdrawCall__Inputs {
-    return new AdminFeeWithdrawCall__Inputs(this);
-  }
-
-  get outputs(): AdminFeeWithdrawCall__Outputs {
-    return new AdminFeeWithdrawCall__Outputs(this);
-  }
-}
-
-export class AdminFeeWithdrawCall__Inputs {
-  _call: AdminFeeWithdrawCall;
-
-  constructor(call: AdminFeeWithdrawCall) {
-    this._call = call;
-  }
-}
-
-export class AdminFeeWithdrawCall__Outputs {
-  _call: AdminFeeWithdrawCall;
-
-  constructor(call: AdminFeeWithdrawCall) {
-    this._call = call;
-  }
-}
-
 export class WithdrawCall extends ethereum.Call {
   get inputs(): WithdrawCall__Inputs {
     return new WithdrawCall__Inputs(this);
@@ -1208,32 +1260,6 @@ export class WithdrawCall__Outputs {
   _call: WithdrawCall;
 
   constructor(call: WithdrawCall) {
-    this._call = call;
-  }
-}
-
-export class RedeemFromExternalPoolCall extends ethereum.Call {
-  get inputs(): RedeemFromExternalPoolCall__Inputs {
-    return new RedeemFromExternalPoolCall__Inputs(this);
-  }
-
-  get outputs(): RedeemFromExternalPoolCall__Outputs {
-    return new RedeemFromExternalPoolCall__Outputs(this);
-  }
-}
-
-export class RedeemFromExternalPoolCall__Inputs {
-  _call: RedeemFromExternalPoolCall;
-
-  constructor(call: RedeemFromExternalPoolCall) {
-    this._call = call;
-  }
-}
-
-export class RedeemFromExternalPoolCall__Outputs {
-  _call: RedeemFromExternalPoolCall;
-
-  constructor(call: RedeemFromExternalPoolCall) {
     this._call = call;
   }
 }

@@ -217,6 +217,15 @@ export class Player extends Entity {
     this.set("withdrawAmount", Value.fromBigInt(value));
   }
 
+  get playerReward(): BigInt {
+    let value = this.get("playerReward");
+    return value.toBigInt();
+  }
+
+  set playerReward(value: BigInt) {
+    this.set("playerReward", Value.fromBigInt(value));
+  }
+
   get withdrawn(): boolean {
     let value = this.get("withdrawn");
     return value.toBoolean();
