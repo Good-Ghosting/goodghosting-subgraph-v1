@@ -90,6 +90,8 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.rewards = BigInt.fromI32(0);
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
+    game.waiting = new Array<string>();
+    game.ghosted = new Array<string>();
     game.firstSegmentStart = contract.firstSegmentStart()
     game.segmentLength = contract.segmentLength()
     game.redeemed = false
