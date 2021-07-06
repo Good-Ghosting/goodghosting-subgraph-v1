@@ -12,6 +12,9 @@ redeemed: Boolean!
 withdrawAmountAllocated: Boolean!
 players: [Player!]!
 winners: [Player!]!
+dropOuts: [Player!]!
+waiting: [Player!]!
+ghosted: [Player!]!
 }
 
 type Player @entity {

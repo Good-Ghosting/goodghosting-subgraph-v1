@@ -149,6 +149,33 @@ export class Game extends Entity {
   set winners(value: Array<string>) {
     this.set("winners", Value.fromStringArray(value));
   }
+
+  get dropOuts(): Array<string> {
+    let value = this.get("dropOuts");
+    return value.toStringArray();
+  }
+
+  set dropOuts(value: Array<string>) {
+    this.set("dropOuts", Value.fromStringArray(value));
+  }
+
+  get waiting(): Array<string> {
+    let value = this.get("waiting");
+    return value.toStringArray();
+  }
+
+  set waiting(value: Array<string>) {
+    this.set("waiting", Value.fromStringArray(value));
+  }
+
+  get ghosted(): Array<string> {
+    let value = this.get("ghosted");
+    return value.toStringArray();
+  }
+
+  set ghosted(value: Array<string>) {
+    this.set("ghosted", Value.fromStringArray(value));
+  }
 }
 
 export class Player extends Entity {
