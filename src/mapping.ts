@@ -68,9 +68,10 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
 export function handleJoinedGame(event: JoinedGame): void {
   let contract = Contract.bind(event.address);
   let address = event.params.player
-  let player = Player.load(address.toString())
+  let player = Player.load(address.toHex())
   if (player == null) {
-    player = new Player(address.toString());
+    player = new Player(address.toHex());
+    player.canRejoin = false;
   }
   player.address = address
   player.mostRecentSegmentPaid = contract.getCurrentSegment()
@@ -78,6 +79,7 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
   player.withdrawn = false;
+
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
 
@@ -98,12 +100,18 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.lastSegment = contract.lastSegment()
     game.withdrawAmountAllocated = false
   }
+  if (player.canRejoin == true) {
+    let dropOutPlayers = game.dropOuts
+    let playerIndex = dropOutPlayers.indexOf(player.id);
+    dropOutPlayers.splice(playerIndex, 1);
+    game.dropOuts = dropOutPlayers;
+  }
   game.currentSegment = contract.getCurrentSegment()
   game.totalGamePrincipal = contract.totalGamePrincipal()
   let players = game.players
   players.push(player.id)
   game.players = players
-
+  player.canRejoin = false;
   game.save()
   player.save()
 }
@@ -120,7 +128,7 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
   let gameWinners = game.winners
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
-    let player = Player.load(winners[i].toString())
+    let player = Player.load(winners[i].toHex())
     gameWinners.push(player.id)
   }
   game.winners = gameWinners
@@ -130,7 +138,7 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
 
 export function handleWithdrawal(event: Withdrawal): void {
   let address = event.params.player
-  let player = Player.load(address.toString())
+  let player = Player.load(address.toHex())
   player.withdrawn = true;
   player.playerReward = event.params.playerReward;
   player.withdrawAmount = event.params.amount
@@ -138,11 +146,13 @@ export function handleWithdrawal(event: Withdrawal): void {
 }
 
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
+  let contract = Contract.bind(event.address);
+  let currentSegment = contract.getCurrentSegment()
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
   let address = event.params.player
   let gameDropOuts = game.dropOuts
-  let player = Player.load(address.toString())
+  let player = Player.load(address.toHex())
   gameDropOuts.push(player.id)
   game.dropOuts = gameDropOuts
   let gamePlayers = game.players
@@ -152,6 +162,9 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   game.totalGamePrincipal = event.params.totalGamePrincipal;
   game.save();
   player.withdrawn = true;
+  if (currentSegment == BigInt.fromI32(0)) {
+    player.canRejoin = true;
+  }
   player.mostRecentSegmentPaid = BigInt.fromI32(-1);
   player.withdrawAmount = event.params.amount
   player.save();

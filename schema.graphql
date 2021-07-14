@@ -25,4 +25,5 @@ amountPaid:  BigInt!
 withdrawAmount:  BigInt!
 playerReward: BigInt!
 withdrawn: Boolean!
+canRejoin: Boolean!
 }

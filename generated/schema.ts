@@ -261,4 +261,13 @@ export class Player extends Entity {
   set withdrawn(value: boolean) {
     this.set("withdrawn", Value.fromBoolean(value));
   }
+
+  get canRejoin(): boolean {
+    let value = this.get("canRejoin");
+    return value.toBoolean();
+  }
+
+  set canRejoin(value: boolean) {
+    this.set("canRejoin", Value.fromBoolean(value));
+  }
 }
