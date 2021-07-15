@@ -96,15 +96,6 @@ export class Game extends Entity {
     this.set("totalGameInterest", Value.fromBigInt(value));
   }
 
-  get externalPoolLiquidity(): BigInt {
-    let value = this.get("externalPoolLiquidity");
-    return value.toBigInt();
-  }
-
-  set externalPoolLiquidity(value: BigInt) {
-    this.set("externalPoolLiquidity", Value.fromBigInt(value));
-  }
-
   get rewards(): BigInt {
     let value = this.get("rewards");
     return value.toBigInt();
@@ -157,24 +148,6 @@ export class Game extends Entity {
 
   set dropOuts(value: Array<string>) {
     this.set("dropOuts", Value.fromStringArray(value));
-  }
-
-  get waiting(): Array<string> {
-    let value = this.get("waiting");
-    return value.toStringArray();
-  }
-
-  set waiting(value: Array<string>) {
-    this.set("waiting", Value.fromStringArray(value));
-  }
-
-  get ghosted(): Array<string> {
-    let value = this.get("ghosted");
-    return value.toStringArray();
-  }
-
-  set ghosted(value: Array<string>) {
-    this.set("ghosted", Value.fromStringArray(value));
   }
 }
 

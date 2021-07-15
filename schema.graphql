@@ -6,15 +6,12 @@ currentSegment: BigInt!
 lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
-externalPoolLiquidity: BigInt!
 rewards: BigInt!
 redeemed: Boolean!
 withdrawAmountAllocated: Boolean!
 players: [Player!]!
 winners: [Player!]!
 dropOuts: [Player!]!
-waiting: [Player!]!
-ghosted: [Player!]!
 }
 
 type Player @entity {

@@ -15,7 +15,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Deposit
-        - FundsRedeemedFromExternalPool
         - JoinedGame
         - OwnershipTransferred
         - Paused
@@ -23,15 +22,12 @@ dataSources:
         - WinnersAnnouncement
         - Withdrawal
         - EarlyWithdrawal
-        - FundsDepositedIntoExternalPool
       abis:
         - name: Contract
           file: Contract/abis/Contract.json
       eventHandlers:
         - event: Deposit(indexed address,indexed uint256,uint256)
           handler: handleDeposit
-        - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256)
-          handler: handleFundsRedeemedFromExternalPool
         - event: JoinedGame(indexed address,uint256)
           handler: handleJoinedGame
         - event: OwnershipTransferred(indexed address,indexed address)
@@ -46,6 +42,4 @@ dataSources:
           handler: handleWithdrawal
         - event: EarlyWithdrawal(indexed address,uint256,uint256)
           handler: handleEarlyWithdrawal
-        - event: FundsDepositedIntoExternalPool(uint256)
-          handler: handleFundsDepositedIntoExternalPool
       file: Contract/Contract.wasm
