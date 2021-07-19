@@ -166,6 +166,12 @@
         "internalType": "uint256",
         "name": "rewards",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalIncentiveAmount",
+        "type": "uint256"
       }
     ],
     "name": "FundsRedeemedFromExternalPool",
@@ -267,6 +273,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "playerReward",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "playerIncentive",
         "type": "uint256"
       }
     ],

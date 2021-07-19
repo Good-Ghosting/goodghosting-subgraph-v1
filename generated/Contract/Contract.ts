@@ -116,6 +116,10 @@ export class FundsRedeemedFromExternalPool__Params {
   get rewards(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
+
+  get totalIncentiveAmount(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
 }
 
 export class JoinedGame extends ethereum.Event {
@@ -239,6 +243,10 @@ export class Withdrawal__Params {
 
   get playerReward(): BigInt {
     return this._event.parameters[2].value.toBigInt();
+  }
+
+  get playerIncentive(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
   }
 }
 
