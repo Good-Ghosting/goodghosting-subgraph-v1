@@ -55,6 +55,7 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.amountPaid = event.params.amount
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
+  player.additionalPlayerReward = BigInt.fromI32(0);
   player.withdrawn = false;
 
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
