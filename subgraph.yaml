@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0x5B719497A7bcdB9772bD65ffee4C163F5Caf7D9d"
+      address: "0x93c9a8a70aC6b10E0A4698A8A531a29cda82611B"
       abi: Contract
-      startBlock: 16851733
+      startBlock: 17109829
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -22,6 +22,7 @@ dataSources:
         - WinnersAnnouncement
         - Withdrawal
         - EarlyWithdrawal
+        - FundsRedeemedFromExternalPool
       abis:
         - name: Contract
           file: ./abis/Contract.json
