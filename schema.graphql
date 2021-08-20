@@ -7,7 +7,6 @@ lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 rewards: BigInt!
-additionalIncentives: BigInt!
 redeemed: Boolean!
 withdrawAmountAllocated: Boolean!
 players: [Player!]!
@@ -22,7 +21,6 @@ mostRecentSegmentPaid:  BigInt!
 amountPaid:  BigInt!
 withdrawAmount:  BigInt!
 playerReward: BigInt!
-additionalPlayerReward: BigInt!
 withdrawn: Boolean!
 canRejoin: Boolean!
 }

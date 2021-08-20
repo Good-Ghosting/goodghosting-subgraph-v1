@@ -105,15 +105,6 @@ export class Game extends Entity {
     this.set("rewards", Value.fromBigInt(value));
   }
 
-  get additionalIncentives(): BigInt {
-    let value = this.get("additionalIncentives");
-    return value.toBigInt();
-  }
-
-  set additionalIncentives(value: BigInt) {
-    this.set("additionalIncentives", Value.fromBigInt(value));
-  }
-
   get redeemed(): boolean {
     let value = this.get("redeemed");
     return value.toBoolean();
@@ -233,15 +224,6 @@ export class Player extends Entity {
 
   set playerReward(value: BigInt) {
     this.set("playerReward", Value.fromBigInt(value));
-  }
-
-  get additionalPlayerReward(): BigInt {
-    let value = this.get("additionalPlayerReward");
-    return value.toBigInt();
-  }
-
-  set additionalPlayerReward(value: BigInt) {
-    this.set("additionalPlayerReward", Value.fromBigInt(value));
   }
 
   get withdrawn(): boolean {
