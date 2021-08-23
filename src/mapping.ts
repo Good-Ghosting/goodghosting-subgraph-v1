@@ -38,6 +38,7 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
   game.currentSegment = contract.getCurrentSegment()
   game.redeemed = true
   game.rewards = event.params.rewards;
+  game.additionalIncentives = event.params.totalIncentiveAmount;
   game.save()
 }
 
@@ -54,6 +55,7 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.amountPaid = event.params.amount
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
+  player.additionalPlayerReward = BigInt.fromI32(0);
 
   player.withdrawn = false;
 
@@ -66,6 +68,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.totalGamePrincipal = event.params.amount
     game.totalGameInterest = BigInt.fromI32(0);
     game.rewards = BigInt.fromI32(0);
+    game.additionalIncentives = BigInt.fromI32(0);
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
     game.firstSegmentStart = contract.firstSegmentStart()
@@ -115,6 +118,7 @@ export function handleWithdrawal(event: Withdrawal): void {
   let player = Player.load(address.toHex())
   player.withdrawn = true;
   player.playerReward = event.params.playerReward;
+  player.additionalPlayerReward = event.params.playerIncentive;
   player.withdrawAmount = event.params.amount
   player.save()
 }
