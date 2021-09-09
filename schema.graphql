@@ -1,3 +1,8 @@
+type GameRegistry @entity {
+id: ID!
+games: [Game!]!
+}
+
 type Game @entity {
 id: ID!
 firstSegmentStart: BigInt!

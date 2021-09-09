@@ -11,7 +11,19 @@ import {
   Withdrawal,
   EarlyWithdrawal
 } from "../generated/Contract/Contract"
-import { Player, Game } from "../generated/schema"
+
+import {
+  Registry,
+  RegistryInitialized,
+  PoolAdded,
+  PoolRemoved
+} from "../generated/Registry/Registry"
+
+import { Player, Game, GameRegistry } from "../generated/schema"
+
+export function handleRegistryInitialized(event: RegistryInitialized): void {
+
+}
 
 export function handleDeposit(event: Deposit): void {
   let contract = Contract.bind(event.address);
