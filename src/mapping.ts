@@ -22,7 +22,43 @@ import {
 import { Player, Game, GameRegistry } from "../generated/schema"
 
 export function handleRegistryInitialized(event: RegistryInitialized): void {
+  let gameRegistry = GameRegistry.load(event.address.toHex())
+  if (gameRegistry === null) {
+    gameRegistry = new GameRegistry(event.address.toHex())
+  }
+  let games = gameRegistry.games
+  let pools = event.params.contracts;
+  for (var i = 0; i < pools.length; i++) {
+    let game = Game.load(pools[i].toHex())
+    if (game === null) {
+      let contract = Contract.bind(pools[i]);
+      game = new Game(event.address.toHex())
+      game.players = new Array<string>();
+      game.totalGamePrincipal = BigInt.fromI32(0)
+      game.totalGameInterest = BigInt.fromI32(0);
+      game.rewards = BigInt.fromI32(0);
+      game.additionalIncentives = BigInt.fromI32(0);
+      game.winners = new Array<string>();
+      game.dropOuts = new Array<string>();
+      game.firstSegmentStart = contract.firstSegmentStart()
+      game.segmentLength = contract.segmentLength()
+      game.redeemed = false
+      game.lastSegment = contract.lastSegment()
+      game.withdrawAmountAllocated = false
+    }
+    games.push(game.id)
+    game.save()
+  }
+  gameRegistry.games = games;
+  gameRegistry.save()
+}
 
+export function handlePoolAdded(event: PoolAdded): void {
+
+}
+
+export function handlePoolRemoved(event: PoolRemoved): void {
+  
 }
 
 export function handleDeposit(event: Deposit): void {
@@ -32,8 +68,7 @@ export function handleDeposit(event: Deposit): void {
   player.mostRecentSegmentPaid = event.params.segment
   player.amountPaid = player.amountPaid + event.params.amount
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   game.totalGamePrincipal = contract.totalGamePrincipal()
   game.currentSegment = contract.getCurrentSegment()
   game.save()
@@ -43,8 +78,7 @@ export function handleDeposit(event: Deposit): void {
 export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
   let contract = Contract.bind(event.address);
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   game.totalGamePrincipal = event.params.totalGamePrincipal
   game.totalGameInterest = event.params.totalGameInterest
   game.currentSegment = contract.getCurrentSegment()
@@ -71,11 +105,10 @@ export function handleJoinedGame(event: JoinedGame): void {
 
   player.withdrawn = false;
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
 
   if (game == null) {
-    game = new Game(admin)
+    game = new Game(event.address.toHex())
     game.players = new Array<string>();
     game.totalGamePrincipal = event.params.amount
     game.totalGameInterest = BigInt.fromI32(0);
@@ -112,8 +145,7 @@ export function handlePaused(event: Paused): void { }
 export function handleUnpaused(event: Unpaused): void { }
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   let gameWinners = game.winners
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
@@ -138,8 +170,7 @@ export function handleWithdrawal(event: Withdrawal): void {
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let contract = Contract.bind(event.address);
   let currentSegment = contract.getCurrentSegment()
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
