@@ -32,7 +32,7 @@ export function handleRegistryInitialized(event: RegistryInitialized): void {
     let game = Game.load(pools[i].toHex())
     if (game === null) {
       let contract = Contract.bind(pools[i]);
-      game = new Game(event.address.toHex())
+      game = new Game(pools[i].toHex())
       game.players = new Array<string>();
       game.totalGamePrincipal = BigInt.fromI32(0)
       game.totalGameInterest = BigInt.fromI32(0);
@@ -54,11 +54,34 @@ export function handleRegistryInitialized(event: RegistryInitialized): void {
 }
 
 export function handlePoolAdded(event: PoolAdded): void {
-
+  let gameRegistry = GameRegistry.load(event.address.toHex())
+  let games = gameRegistry.games
+  let pool = event.params.contracts;
+  let game = Game.load(pool.toHex())
+  if (game === null) {
+    let contract = Contract.bind(pool);
+    game = new Game(pool.toHex())
+    game.players = new Array<string>();
+    game.totalGamePrincipal = BigInt.fromI32(0)
+    game.totalGameInterest = BigInt.fromI32(0);
+    game.rewards = BigInt.fromI32(0);
+    game.additionalIncentives = BigInt.fromI32(0);
+    game.winners = new Array<string>();
+    game.dropOuts = new Array<string>();
+    game.firstSegmentStart = contract.firstSegmentStart()
+    game.segmentLength = contract.segmentLength()
+    game.redeemed = false
+    game.lastSegment = contract.lastSegment()
+    game.withdrawAmountAllocated = false
+  }
+  games.push(game.id)
+  game.save()
+  gameRegistry.games = games;
+  gameRegistry.save()
 }
 
 export function handlePoolRemoved(event: PoolRemoved): void {
-  
+
 }
 
 export function handleDeposit(event: Deposit): void {
