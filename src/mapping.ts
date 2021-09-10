@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts"
 import {
   Contract,
   Deposit,
@@ -13,7 +13,6 @@ import {
 } from "../generated/Contract/Contract"
 
 import {
-  Registry,
   RegistryInitialized,
   PoolAdded,
   PoolRemoved
@@ -81,6 +80,14 @@ export function handlePoolAdded(event: PoolAdded): void {
 }
 
 export function handlePoolRemoved(event: PoolRemoved): void {
+  let gameRegistry = GameRegistry.load(event.address.toHex())
+  let games = gameRegistry.games
+  let pool = event.params.contracts;
+  let game = Game.load(pool.toHex())
+  let gameIndex = games.indexOf(game.id);
+  games.splice(gameIndex, 1);
+  gameRegistry.games = games;
+  gameRegistry.save()
 
 }
 
