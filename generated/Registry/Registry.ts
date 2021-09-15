@@ -81,8 +81,8 @@ export class RegistryInitialized__Params {
     this._event = event;
   }
 
-  get contracts(): Array<Address> {
-    return this._event.parameters[0].value.toAddressArray();
+  get contracts(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -143,8 +143,8 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _contracts(): Array<Address> {
-    return this._call.inputValues[0].value.toAddressArray();
+  get _contracts(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 }
 
@@ -152,6 +152,36 @@ export class ConstructorCall__Outputs {
   _call: ConstructorCall;
 
   constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+}
+
+export class AddContractCall extends ethereum.Call {
+  get inputs(): AddContractCall__Inputs {
+    return new AddContractCall__Inputs(this);
+  }
+
+  get outputs(): AddContractCall__Outputs {
+    return new AddContractCall__Outputs(this);
+  }
+}
+
+export class AddContractCall__Inputs {
+  _call: AddContractCall;
+
+  constructor(call: AddContractCall) {
+    this._call = call;
+  }
+
+  get _contract(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class AddContractCall__Outputs {
+  _call: AddContractCall;
+
+  constructor(call: AddContractCall) {
     this._call = call;
   }
 }
@@ -208,66 +238,6 @@ export class TransferOwnershipCall__Outputs {
   _call: TransferOwnershipCall;
 
   constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class AddContractCall extends ethereum.Call {
-  get inputs(): AddContractCall__Inputs {
-    return new AddContractCall__Inputs(this);
-  }
-
-  get outputs(): AddContractCall__Outputs {
-    return new AddContractCall__Outputs(this);
-  }
-}
-
-export class AddContractCall__Inputs {
-  _call: AddContractCall;
-
-  constructor(call: AddContractCall) {
-    this._call = call;
-  }
-
-  get _contract(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class AddContractCall__Outputs {
-  _call: AddContractCall;
-
-  constructor(call: AddContractCall) {
-    this._call = call;
-  }
-}
-
-export class RemoveContractCall extends ethereum.Call {
-  get inputs(): RemoveContractCall__Inputs {
-    return new RemoveContractCall__Inputs(this);
-  }
-
-  get outputs(): RemoveContractCall__Outputs {
-    return new RemoveContractCall__Outputs(this);
-  }
-}
-
-export class RemoveContractCall__Inputs {
-  _call: RemoveContractCall;
-
-  constructor(call: RemoveContractCall) {
-    this._call = call;
-  }
-
-  get _contract(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class RemoveContractCall__Outputs {
-  _call: RemoveContractCall;
-
-  constructor(call: RemoveContractCall) {
     this._call = call;
   }
 }

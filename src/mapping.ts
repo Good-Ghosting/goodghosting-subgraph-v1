@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, store } from "@graphprotocol/graph-ts"
 import {
   Contract,
   Deposit,
@@ -10,28 +10,20 @@ import {
   WinnersAnnouncement,
   Withdrawal,
   EarlyWithdrawal
-} from "../generated/Contract/Contract"
+} from "../generated/templates/Contract/Contract"
 
-import {
-  RegistryInitialized,
-  PoolAdded,
-  PoolRemoved
-} from "../generated/Registry/Registry"
+import { Contract as Pool } from "../generated/templates"
 
-import { Player, Game, GameRegistry } from "../generated/schema"
+import { RegistryInitialized, PoolAdded } from "../generated/Registry/Registry"
+import { Player, Game } from "../generated/schema"
 
 export function handleRegistryInitialized(event: RegistryInitialized): void {
-  let gameRegistry = GameRegistry.load(event.address.toHex())
-  if (gameRegistry === null) {
-    gameRegistry = new GameRegistry(event.address.toHex())
-  }
-  let games = gameRegistry.games
-  let pools = event.params.contracts;
-  for (var i = 0; i < pools.length; i++) {
-    let game = Game.load(pools[i].toHex())
+  let pools =  event.params.contracts
+    Pool.create(pools)
+    let game = Game.load(pools.toHex())
     if (game === null) {
-      let contract = Contract.bind(pools[i]);
-      game = new Game(pools[i].toHex())
+      let contract = Contract.bind(pools);
+      game = new Game(pools.toHex())
       game.players = new Array<string>();
       game.totalGamePrincipal = BigInt.fromI32(0)
       game.totalGameInterest = BigInt.fromI32(0);
@@ -42,22 +34,18 @@ export function handleRegistryInitialized(event: RegistryInitialized): void {
       game.firstSegmentStart = contract.firstSegmentStart()
       game.segmentLength = contract.segmentLength()
       game.redeemed = false
+      game.currentSegment = contract.getCurrentSegment()
       game.lastSegment = contract.lastSegment()
       game.withdrawAmountAllocated = false
     }
-    games.push(game.id)
     game.save()
-  }
-  gameRegistry.games = games;
-  gameRegistry.save()
 }
 
 export function handlePoolAdded(event: PoolAdded): void {
-  let gameRegistry = GameRegistry.load(event.address.toHex())
-  let games = gameRegistry.games
   let pool = event.params.contracts;
   let game = Game.load(pool.toHex())
   if (game === null) {
+    Pool.create(pool)
     let contract = Contract.bind(pool);
     game = new Game(pool.toHex())
     game.players = new Array<string>();
@@ -73,23 +61,13 @@ export function handlePoolAdded(event: PoolAdded): void {
     game.lastSegment = contract.lastSegment()
     game.withdrawAmountAllocated = false
   }
-  games.push(game.id)
   game.save()
-  gameRegistry.games = games;
-  gameRegistry.save()
 }
 
-export function handlePoolRemoved(event: PoolRemoved): void {
-  let gameRegistry = GameRegistry.load(event.address.toHex())
-  let games = gameRegistry.games
-  let pool = event.params.contracts;
-  let game = Game.load(pool.toHex())
-  let gameIndex = games.indexOf(game.id);
-  games.splice(gameIndex, 1);
-  gameRegistry.games = games;
-  gameRegistry.save()
-
-}
+// export function handlePoolRemoved(event: PoolRemoved): void {
+//   let pool = event.params.contracts;
+//   store.remove('Game', pool.toHex())
+// }
 
 export function handleDeposit(event: Deposit): void {
   let contract = Contract.bind(event.address);
@@ -132,12 +110,12 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
   player.additionalPlayerReward = BigInt.fromI32(0);
-
   player.withdrawn = false;
 
   let game = Game.load(event.address.toHex())
 
   if (game == null) {
+    Pool.create(event.address)
     game = new Game(event.address.toHex())
     game.players = new Array<string>();
     game.totalGamePrincipal = event.params.amount
@@ -152,6 +130,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.lastSegment = contract.lastSegment()
     game.withdrawAmountAllocated = false
   }
+
   if (player.canRejoin == true) {
     let dropOutPlayers = game.dropOuts
     let playerIndex = dropOutPlayers.indexOf(player.id);

@@ -2,9 +2,9 @@
   {
     "inputs": [
       {
-        "internalType": "address[]",
+        "internalType": "address",
         "name": "_contracts",
-        "type": "address[]"
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -60,13 +60,26 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address[]",
+        "internalType": "address",
         "name": "contracts",
-        "type": "address[]"
+        "type": "address"
       }
     ],
     "name": "RegistryInitialized",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_contract",
+        "type": "address"
+      }
+    ],
+    "name": "addContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -116,32 +129,6 @@
       }
     ],
     "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      }
-    ],
-    "name": "addContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      }
-    ],
-    "name": "removeContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
