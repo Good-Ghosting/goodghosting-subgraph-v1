@@ -46,29 +46,3 @@ dataSources:
         - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256,uint256)
           handler: handleFundsRedeemedFromExternalPool
       file: Contract/Contract.wasm
-  - kind: ethereum/contract
-    name: Registry
-    network: matic
-    source:
-      address: "0x50a55e36ba74e180270939c0e6fd788a72f3a476"
-      abi: Registry
-      startBlock: 18912965
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - RegistryInitialized
-        - PoolAdded
-        - PoolRemoved
-      abis:
-        - name: Registry
-          file: Registry/abis/Registry.json
-      eventHandlers:
-        - event: RegistryInitialized(address[])
-          handler: handleRegistryInitialized
-        - event: PoolAdded(address)
-          handler: handlePoolAdded
-        - event: PoolRemoved(address)
-          handler: handlePoolRemoved
-      file: Contract/Contract.wasm
