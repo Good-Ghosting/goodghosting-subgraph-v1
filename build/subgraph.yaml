@@ -21,8 +21,6 @@ dataSources:
         - name: Contract
           file: Registry/abis/Contract.json
       eventHandlers:
-        - event: RegistryInitialized(address)
-          handler: handleRegistryInitialized
         - event: PoolAdded(address)
           handler: handlePoolAdded
       file: Registry/Registry.wasm

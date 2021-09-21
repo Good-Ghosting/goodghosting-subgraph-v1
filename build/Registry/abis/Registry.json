@@ -43,32 +43,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "contracts",
-        "type": "address"
-      }
-    ],
-    "name": "PoolRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "contracts",
-        "type": "address"
-      }
-    ],
-    "name": "RegistryInitialized",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",

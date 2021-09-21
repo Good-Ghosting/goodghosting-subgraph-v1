@@ -14,32 +14,32 @@ import {
 
 import { Contract as Pool } from "../generated/templates"
 
-import { RegistryInitialized, PoolAdded } from "../generated/Registry/Registry"
+import {  PoolAdded } from "../generated/Registry/Registry"
 import { Player, Game } from "../generated/schema"
 
-export function handleRegistryInitialized(event: RegistryInitialized): void {
-  let pools =  event.params.contracts
-    Pool.create(pools)
-    let game = Game.load(pools.toHex())
-    if (game === null) {
-      let contract = Contract.bind(pools);
-      game = new Game(pools.toHex())
-      game.players = new Array<string>();
-      game.totalGamePrincipal = BigInt.fromI32(0)
-      game.totalGameInterest = BigInt.fromI32(0);
-      game.rewards = BigInt.fromI32(0);
-      game.additionalIncentives = BigInt.fromI32(0);
-      game.winners = new Array<string>();
-      game.dropOuts = new Array<string>();
-      game.firstSegmentStart = contract.firstSegmentStart()
-      game.segmentLength = contract.segmentLength()
-      game.redeemed = false
-      game.currentSegment = contract.getCurrentSegment()
-      game.lastSegment = contract.lastSegment()
-      game.withdrawAmountAllocated = false
-    }
-    game.save()
-}
+// export function handleRegistryInitialized(event: RegistryInitialized): void {
+//   let pools =  event.params.contracts
+//     Pool.create(pools)
+//     let game = Game.load(pools.toHex())
+//     if (game === null) {
+//       let contract = Contract.bind(pools);
+//       game = new Game(pools.toHex())
+//       game.players = new Array<string>();
+//       game.totalGamePrincipal = BigInt.fromI32(0)
+//       game.totalGameInterest = BigInt.fromI32(0);
+//       game.rewards = BigInt.fromI32(0);
+//       game.additionalIncentives = BigInt.fromI32(0);
+//       game.winners = new Array<string>();
+//       game.dropOuts = new Array<string>();
+//       game.firstSegmentStart = contract.firstSegmentStart()
+//       game.segmentLength = contract.segmentLength()
+//       game.redeemed = false
+//       game.currentSegment = contract.getCurrentSegment()
+//       game.lastSegment = contract.lastSegment()
+//       game.withdrawAmountAllocated = false
+//     }
+//     game.save()
+// }
 
 export function handlePoolAdded(event: PoolAdded): void {
   let pool = event.params.contracts;
@@ -60,6 +60,8 @@ export function handlePoolAdded(event: PoolAdded): void {
     game.redeemed = false
     game.lastSegment = contract.lastSegment()
     game.withdrawAmountAllocated = false
+    game.currentSegment = contract.getCurrentSegment()
+    game.totalGamePrincipal = contract.totalGamePrincipal()
   }
   game.save()
 }

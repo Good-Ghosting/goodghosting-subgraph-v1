@@ -50,42 +50,6 @@ export class PoolAdded__Params {
   }
 }
 
-export class PoolRemoved extends ethereum.Event {
-  get params(): PoolRemoved__Params {
-    return new PoolRemoved__Params(this);
-  }
-}
-
-export class PoolRemoved__Params {
-  _event: PoolRemoved;
-
-  constructor(event: PoolRemoved) {
-    this._event = event;
-  }
-
-  get contracts(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class RegistryInitialized extends ethereum.Event {
-  get params(): RegistryInitialized__Params {
-    return new RegistryInitialized__Params(this);
-  }
-}
-
-export class RegistryInitialized__Params {
-  _event: RegistryInitialized;
-
-  constructor(event: RegistryInitialized) {
-    this._event = event;
-  }
-
-  get contracts(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
 export class Registry extends ethereum.SmartContract {
   static bind(address: Address): Registry {
     return new Registry("Registry", address);
