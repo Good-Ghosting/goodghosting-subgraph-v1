@@ -3,26 +3,40 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Contract
+    name: Registry
     network: matic
     source:
-      address: "0x379eAC144939570B3F9289580Ef7C8a1F7f76259"
-      abi: Contract
-      startBlock: 18382001
+      address: "0xd4d1911398c46ca3ff9a722df33da089f7c9ff33"
+      abi: Registry
+      startBlock: 19373648
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Deposit
-        - JoinedGame
-        - OwnershipTransferred
-        - Paused
-        - Unpaused
-        - WinnersAnnouncement
-        - Withdrawal
-        - EarlyWithdrawal
-        - FundsRedeemedFromExternalPool
+        - Game
+      abis:
+        - name: Registry
+          file: Registry/abis/Registry.json
+        - name: Contract
+          file: Registry/abis/Contract.json
+      eventHandlers:
+        - event: PoolAdded(address)
+          handler: handlePoolAdded
+      file: Registry/Registry.wasm
+templates:
+  - name: Contract
+    kind: ethereum/contract
+    network: matic
+    source:
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Game
+        - Player
       abis:
         - name: Contract
           file: Contract/abis/Contract.json
@@ -45,4 +59,4 @@ dataSources:
           handler: handleEarlyWithdrawal
         - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256,uint256)
           handler: handleFundsRedeemedFromExternalPool
-      file: Contract/Contract.wasm
+      file: Registry/Registry.wasm

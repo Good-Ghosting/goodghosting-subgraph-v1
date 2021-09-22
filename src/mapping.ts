@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts"
+import { BigInt, store } from "@graphprotocol/graph-ts"
 import {
   Contract,
   Deposit,
@@ -10,8 +10,37 @@ import {
   WinnersAnnouncement,
   Withdrawal,
   EarlyWithdrawal
-} from "../generated/Contract/Contract"
+} from "../generated/templates/Contract/Contract"
+
+import { Contract as Pool } from "../generated/templates"
+
+import {  PoolAdded } from "../generated/Registry/Registry"
 import { Player, Game } from "../generated/schema"
+
+export function handlePoolAdded(event: PoolAdded): void {
+  let pool = event.params.contracts;
+  let game = Game.load(pool.toHex())
+  if (game === null) {
+    Pool.create(pool)
+    let contract = Contract.bind(pool);
+    game = new Game(pool.toHex())
+    game.players = new Array<string>();
+    game.totalGamePrincipal = BigInt.fromI32(0)
+    game.totalGameInterest = BigInt.fromI32(0);
+    game.rewards = BigInt.fromI32(0);
+    game.additionalIncentives = BigInt.fromI32(0);
+    game.winners = new Array<string>();
+    game.dropOuts = new Array<string>();
+    game.firstSegmentStart = contract.firstSegmentStart()
+    game.segmentLength = contract.segmentLength()
+    game.redeemed = false
+    game.lastSegment = contract.lastSegment()
+    game.withdrawAmountAllocated = false
+    game.currentSegment = contract.getCurrentSegment()
+    game.totalGamePrincipal = contract.totalGamePrincipal()
+  }
+  game.save()
+}
 
 export function handleDeposit(event: Deposit): void {
   let contract = Contract.bind(event.address);
@@ -56,14 +85,14 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
   player.additionalPlayerReward = BigInt.fromI32(0);
-
   player.withdrawn = false;
 
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
 
   if (game == null) {
-    game = new Game(admin)
+    Pool.create(event.address)
+    game = new Game(event.address.toHex())
     game.players = new Array<string>();
     game.totalGamePrincipal = event.params.amount
     game.totalGameInterest = BigInt.fromI32(0);
@@ -77,6 +106,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.lastSegment = contract.lastSegment()
     game.withdrawAmountAllocated = false
   }
+
   if (player.canRejoin == true) {
     let dropOutPlayers = game.dropOuts
     let playerIndex = dropOutPlayers.indexOf(player.id);
