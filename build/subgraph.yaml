@@ -6,9 +6,9 @@ dataSources:
     name: Registry
     network: matic
     source:
-      address: "0xd4d1911398c46ca3ff9a722df33da089f7c9ff33"
+      address: "0xe66fc6f6af841463465b23464cac796dff437f47"
       abi: Registry
-      startBlock: 19373648
+      startBlock: 19412240
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

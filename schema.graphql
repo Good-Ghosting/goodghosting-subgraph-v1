@@ -6,6 +6,10 @@ currentSegment: BigInt!
 lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
+segmentPayment: BigInt!
+adminFeeAmount: BigInt!
+adminFeePercent: BigInt!
+earlyWithdrawFeePercent: BigInt!
 rewards: BigInt!
 additionalIncentives: BigInt!
 redeemed: Boolean!

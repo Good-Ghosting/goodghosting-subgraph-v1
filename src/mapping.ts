@@ -27,6 +27,10 @@ export function handlePoolAdded(event: PoolAdded): void {
     game.players = new Array<string>();
     game.totalGamePrincipal = BigInt.fromI32(0)
     game.totalGameInterest = BigInt.fromI32(0);
+    game.segmentPayment = BigInt.fromI32(0);
+    game.adminFeeAmount = BigInt.fromI32(0);
+    game.adminFeePercent = BigInt.fromI32(0);
+    game.earlyWithdrawFeePercent = BigInt.fromI32(0);
     game.rewards = BigInt.fromI32(0);
     game.additionalIncentives = BigInt.fromI32(0);
     game.winners = new Array<string>();
@@ -49,8 +53,7 @@ export function handleDeposit(event: Deposit): void {
   player.mostRecentSegmentPaid = event.params.segment
   player.amountPaid = player.amountPaid + event.params.amount
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   game.totalGamePrincipal = contract.totalGamePrincipal()
   game.currentSegment = contract.getCurrentSegment()
   game.save()
@@ -59,14 +62,13 @@ export function handleDeposit(event: Deposit): void {
 
 export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
   let contract = Contract.bind(event.address);
-
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   game.totalGamePrincipal = event.params.totalGamePrincipal
   game.totalGameInterest = event.params.totalGameInterest
   game.currentSegment = contract.getCurrentSegment()
   game.redeemed = true
   game.rewards = event.params.rewards;
+  game.adminFeeAmount = contract.adminFeeAmount();
   game.additionalIncentives = event.params.totalIncentiveAmount;
   game.save()
 }
@@ -87,8 +89,7 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.additionalPlayerReward = BigInt.fromI32(0);
   player.withdrawn = false;
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
 
   if (game == null) {
     Pool.create(event.address)
@@ -100,6 +101,10 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.additionalIncentives = BigInt.fromI32(0);
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
+    game.segmentPayment = contract.segmentPayment()
+    game.adminFeeAmount = BigInt.fromI32(0);
+    game.adminFeePercent = contract.customFee()
+    game.earlyWithdrawFeePercent = contract.earlyWithdrawalFee()
     game.firstSegmentStart = contract.firstSegmentStart()
     game.segmentLength = contract.segmentLength()
     game.redeemed = false
@@ -130,8 +135,7 @@ export function handlePaused(event: Paused): void { }
 export function handleUnpaused(event: Unpaused): void { }
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   let gameWinners = game.winners
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
@@ -156,8 +160,7 @@ export function handleWithdrawal(event: Withdrawal): void {
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let contract = Contract.bind(event.address);
   let currentSegment = contract.getCurrentSegment()
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let game = Game.load(event.address.toHex())
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
