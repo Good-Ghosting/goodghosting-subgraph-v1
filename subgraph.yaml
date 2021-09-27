@@ -3,41 +3,26 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Registry
+    name: Contract
     network: matic
     source:
-      address: "0xe66fc6f6af841463465b23464cac796dff437f47"
-      abi: Registry
-      startBlock: 19412240
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Game
-      abis:
-        - name: Registry
-          file: ./abis/Registry.json
-        - name: Contract
-          file: ./abis/Contract.json
-      eventHandlers:
-        - event: PoolAdded(address)
-          handler: handlePoolAdded
-      file: ./src/mapping.ts
-
-templates:
-  - name: Contract
-    kind: ethereum/contract
-    network: matic
-    source:
+      address: "0x379eAC144939570B3F9289580Ef7C8a1F7f76259"
       abi: Contract
+      startBlock: 18382001
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Game
-        - Player
+        - Deposit
+        - JoinedGame
+        - OwnershipTransferred
+        - Paused
+        - Unpaused
+        - WinnersAnnouncement
+        - Withdrawal
+        - EarlyWithdrawal
+        - FundsRedeemedFromExternalPool
       abis:
         - name: Contract
           file: ./abis/Contract.json
