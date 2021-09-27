@@ -1,0 +1,28 @@
+type Game @entity {
+id: ID!
+firstSegmentStart: BigInt!
+segmentLength: BigInt!
+currentSegment: BigInt!
+lastSegment: BigInt!
+totalGamePrincipal: BigInt!
+totalGameInterest: BigInt!
+rewards: BigInt!
+additionalIncentives: BigInt!
+redeemed: Boolean!
+withdrawAmountAllocated: Boolean!
+players: [Player!]!
+winners: [Player!]!
+dropOuts: [Player!]!
+}
+
+type Player @entity {
+id: ID!
+address: Bytes!
+mostRecentSegmentPaid:  BigInt!
+amountPaid:  BigInt!
+withdrawAmount:  BigInt!
+playerReward: BigInt!
+additionalPlayerReward: BigInt!
+withdrawn: Boolean!
+canRejoin: Boolean!
+}
