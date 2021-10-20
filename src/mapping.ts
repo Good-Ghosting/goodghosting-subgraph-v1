@@ -126,11 +126,18 @@ export function handleWithdrawal(event: Withdrawal): void {
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let contract = Contract.bind(event.address);
   let currentSegment = contract.getCurrentSegment()
+  let playerInfo = contract.players(event.params.player)
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
+  if(!playerInfo.value2 && game.winners.length > 0) {
+  let gameWinners = game.winners
+  let playerIndex = gameWinners.indexOf(player.id);
+  gameWinners.splice(playerIndex, 1);
+  game.winners = gameWinners;
+  }
   gameDropOuts.push(player.id)
   game.dropOuts = gameDropOuts
   let gamePlayers = game.players
