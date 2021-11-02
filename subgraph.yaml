@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0x379eAC144939570B3F9289580Ef7C8a1F7f76259"
+      address: "0x153f124adc230a72dc902013002ca0ffa31ddf0a"
       abi: Contract
-      startBlock: 18382001
+      startBlock: 20887461 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -100,13 +100,17 @@ export function handlePaused(event: Paused): void { }
 export function handleUnpaused(event: Unpaused): void { }
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
+  let contract = Contract.bind(event.address);
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
   let gameWinners = game.winners
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
     let player = Player.load(winners[i].toHex())
-    gameWinners.push(player.id)
+    let playerInfo = contract.players(winners[i])
+    if (playerInfo.value2) {
+      gameWinners.push(player.id)
+    }
   }
   game.winners = gameWinners
   game.withdrawAmountAllocated = true
