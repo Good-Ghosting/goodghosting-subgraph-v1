@@ -2,6 +2,8 @@
 This subgraph dynamically tracks the new players joining the game, the interest generated in the game, if an player performs an early withdraw etc.
 
 ## Setup
+Till we have support for unified subgraph use the ```subgraph/v1``` branch
+
 After cloning the repository run ```yarn install```
 
 Chnage the network name and the contract addres in the [YAML](https://github.com/Good-Ghosting/graph/blob/master/subgraph.yaml) file.
