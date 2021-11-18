@@ -141,6 +141,15 @@ export class Game extends Entity {
     this.set("withdrawAmountAllocated", Value.fromBoolean(value));
   }
 
+  get totalDropouts(): BigInt {
+    let value = this.get("totalDropouts");
+    return value.toBigInt();
+  }
+
+  set totalDropouts(value: BigInt) {
+    this.set("totalDropouts", Value.fromBigInt(value));
+  }
+
   get players(): Array<string> {
     let value = this.get("players");
     return value.toStringArray();

@@ -11,6 +11,7 @@ segmentCounter: [BigInt!]!
 additionalIncentives: BigInt!
 redeemed: Boolean!
 withdrawAmountAllocated: Boolean!
+totalDropouts: BigInt!
 players: [Player!]!
 winners: [Player!]!
 dropOuts: [Player!]!

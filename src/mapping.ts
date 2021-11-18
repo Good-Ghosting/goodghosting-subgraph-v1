@@ -25,10 +25,13 @@ export function handleDeposit(event: Deposit): void {
   game.totalGamePrincipal = contract.totalGamePrincipal()
   game.currentSegment = contract.getCurrentSegment()
   let segmentCounter = game.segmentCounter;
-  if (BigInt.fromI32(segmentCounter.length) < game.currentSegment) {
+  if (segmentCounter.length - 1 < game.currentSegment.toI32()) {
     segmentCounter.push(BigInt.fromI32(1))
   } else {
-    segmentCounter[game.currentSegment.toI32()] = segmentCounter[game.currentSegment.toI32()] + BigInt.fromI32(1);
+    let index = segmentCounter.length - 1
+    let counter = segmentCounter[index]
+    counter = counter + BigInt.fromI32(1);
+    segmentCounter[index] = counter;
   }
   game.segmentCounter = segmentCounter;
   game.save()
@@ -75,6 +78,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.totalGamePrincipal = event.params.amount
     game.totalGameInterest = BigInt.fromI32(0);
     game.rewards = BigInt.fromI32(0);
+    game.totalDropouts = BigInt.fromI32(0);
     game.additionalIncentives = BigInt.fromI32(0);
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
@@ -152,12 +156,21 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let player = Player.load(address.toHex())
   gameDropOuts.push(player.id)
   game.dropOuts = gameDropOuts
+  game.totalDropouts = BigInt.fromI32(gameDropOuts.length)
   let gamePlayers = game.players
   let playerIndex = gamePlayers.indexOf(player.id);
   gamePlayers.splice(playerIndex, 1);
   game.players = gamePlayers;
   game.totalGamePrincipal = event.params.totalGamePrincipal;
+  let segmentCounter = game.segmentCounter;
+  for (var i = 0; i < segmentCounter.length; i++) {
+    if (i == currentSegment.toI32()) {
+      segmentCounter[i] = segmentCounter[i] - BigInt.fromI32(1);
+    }
+  }
+  game.segmentCounter = segmentCounter;
   game.save();
+
   player.withdrawn = true;
   if (currentSegment == BigInt.fromI32(0)) {
     player.canRejoin = true;
