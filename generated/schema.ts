@@ -105,6 +105,15 @@ export class Game extends Entity {
     this.set("rewards", Value.fromBigInt(value));
   }
 
+  get segmentCounter(): Array<BigInt> {
+    let value = this.get("segmentCounter");
+    return value.toBigIntArray();
+  }
+
+  set segmentCounter(value: Array<BigInt>) {
+    this.set("segmentCounter", Value.fromBigIntArray(value));
+  }
+
   get additionalIncentives(): BigInt {
     let value = this.get("additionalIncentives");
     return value.toBigInt();

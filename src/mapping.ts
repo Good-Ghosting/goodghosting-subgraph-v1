@@ -24,6 +24,13 @@ export function handleDeposit(event: Deposit): void {
   let game = Game.load(admin)
   game.totalGamePrincipal = contract.totalGamePrincipal()
   game.currentSegment = contract.getCurrentSegment()
+  let segmentCounter = game.segmentCounter;
+  if (BigInt.fromI32(segmentCounter.length) < game.currentSegment) {
+    segmentCounter.push(BigInt.fromI32(1))
+  } else {
+    segmentCounter[game.currentSegment.toI32()] = segmentCounter[game.currentSegment.toI32()] + BigInt.fromI32(1);
+  }
+  game.segmentCounter = segmentCounter;
   game.save()
   player.save()
 }
@@ -71,6 +78,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.additionalIncentives = BigInt.fromI32(0);
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
+    game.segmentCounter = new Array<BigInt>();
     game.firstSegmentStart = contract.firstSegmentStart()
     game.segmentLength = contract.segmentLength()
     game.redeemed = false
@@ -85,6 +93,13 @@ export function handleJoinedGame(event: JoinedGame): void {
   }
   game.currentSegment = contract.getCurrentSegment()
   game.totalGamePrincipal = contract.totalGamePrincipal()
+  let segmentCounter = game.segmentCounter;
+  if (segmentCounter.length == 0) {
+    segmentCounter.push(BigInt.fromI32(1))
+  } else {
+    segmentCounter[0] = segmentCounter[0] + BigInt.fromI32(1);
+  }
+  game.segmentCounter = segmentCounter;
   let players = game.players
   players.push(player.id)
   game.players = players
