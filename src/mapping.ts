@@ -97,6 +97,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     let playerIndex = dropOutPlayers.indexOf(player.id);
     dropOutPlayers.splice(playerIndex, 1);
     game.dropOuts = dropOutPlayers;
+    game.totalDropouts = BigInt.fromI32(dropOutPlayers.length)
   }
   game.currentSegment = contract.getCurrentSegment()
   game.totalGamePrincipal = contract.totalGamePrincipal()
