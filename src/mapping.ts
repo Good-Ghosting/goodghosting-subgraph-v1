@@ -33,9 +33,8 @@ export function handleDeposit(event: Deposit): void {
     counter = counter + BigInt.fromI32(1);
     segmentCounter[index] = counter;
   }
-  for (var i = 0; i < segmentCounter.length - 1; i++) {
-    segmentCounter[i] = segmentCounter[i] - BigInt.fromI32(1);
-  }
+  segmentCounter[segmentCounter.length - 2] = segmentCounter[segmentCounter.length - 2] - BigInt.fromI32(1);
+  
   game.segmentCounter = segmentCounter;
   game.save()
   player.save()
