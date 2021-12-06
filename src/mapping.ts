@@ -27,11 +27,8 @@ export function handleDeposit(event: Deposit): void {
   let segmentCounter = game.segmentCounter;
   if (segmentCounter.length - 1 < game.currentSegment.toI32()) {
     segmentCounter.push(BigInt.fromI32(1))
-  } else {
-    let index = segmentCounter.length - 1
-    let counter = segmentCounter[index]
-    counter = counter + BigInt.fromI32(1);
-    segmentCounter[index] = counter;
+  } else if (segmentCounter.length - 1 == game.currentSegment.toI32()) {
+    segmentCounter[segmentCounter.length - 1] = segmentCounter[segmentCounter.length - 1] + BigInt.fromI32(1);
   }
   segmentCounter[segmentCounter.length - 2] = segmentCounter[segmentCounter.length - 2] - BigInt.fromI32(1);
   
@@ -165,13 +162,6 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   gamePlayers.splice(playerIndex, 1);
   game.players = gamePlayers;
   game.totalGamePrincipal = event.params.totalGamePrincipal;
-  let segmentCounter = game.segmentCounter;
-  for (var i = 0; i < segmentCounter.length; i++) {
-    if (i == currentSegment.toI32()) {
-      segmentCounter[i] = segmentCounter[i] - BigInt.fromI32(1);
-    }
-  }
-  game.segmentCounter = segmentCounter;
   game.save();
 
   player.withdrawn = true;
