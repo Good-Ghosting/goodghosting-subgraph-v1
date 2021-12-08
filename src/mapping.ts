@@ -98,9 +98,10 @@ export function handleJoinedGame(event: JoinedGame): void {
   game.currentSegment = contract.getCurrentSegment()
   game.totalGamePrincipal = contract.totalGamePrincipal()
   let segmentCounter = game.segmentCounter;
+
   if (segmentCounter.length == 0) {
     segmentCounter.push(BigInt.fromI32(1))
-  } else {
+  } else if (player.canRejoin == false) {
     segmentCounter[0] = segmentCounter[0] + BigInt.fromI32(1);
   }
   game.segmentCounter = segmentCounter;
