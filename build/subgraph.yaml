@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: matic
+    network: celo
     source:
-      address: "0xb12695e555ce0d0ed2b8d3db90a027e234697d98"
+      address: "0xe2db3ff23adf232b0db2c652d50b413f6511bacd"
       abi: Contract
-      startBlock: 22019372
+      startBlock: 10002751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

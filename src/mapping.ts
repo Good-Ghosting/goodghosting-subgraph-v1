@@ -98,6 +98,7 @@ export function handleJoinedGame(event: JoinedGame): void {
   game.currentSegment = contract.getCurrentSegment()
   game.totalGamePrincipal = contract.totalGamePrincipal()
   let segmentCounter = game.segmentCounter;
+
   if (segmentCounter.length == 0) {
     segmentCounter.push(BigInt.fromI32(1))
   } else {
@@ -154,6 +155,7 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
+  let playerInfo = contract.players(event.params.player)
   gameDropOuts.push(player.id)
   game.dropOuts = gameDropOuts
   game.totalDropouts = BigInt.fromI32(gameDropOuts.length)
@@ -162,6 +164,13 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   gamePlayers.splice(playerIndex, 1);
   game.players = gamePlayers;
   game.totalGamePrincipal = event.params.totalGamePrincipal;
+  let segmentCounter = game.segmentCounter;
+  for (var i = 0; i < segmentCounter.length; i++) {
+    if (i == playerInfo.value4.toI32()) {
+      segmentCounter[i] = segmentCounter[i] - BigInt.fromI32(1);
+    }
+  }
+  game.segmentCounter = segmentCounter;
   game.save();
 
   player.withdrawn = true;
