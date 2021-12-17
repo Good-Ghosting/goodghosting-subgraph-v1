@@ -1,4 +1,5 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts"
+import { BigInt, Address, log } from "@graphprotocol/graph-ts"
+import {Contract__playersResult} from "../generated/Contract/Contract"
 import {
   Contract,
   Deposit,
@@ -22,8 +23,20 @@ export function handleDeposit(event: Deposit): void {
 
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
-  game.totalGamePrincipal = contract.totalGamePrincipal()
-  game.currentSegment = contract.getCurrentSegment()
+  let callResult = contract.try_totalGamePrincipal()
+  if (callResult.reverted) {
+    log.info('totalGamePrincipal call reverted', [])
+  } else {
+    game.totalGamePrincipal = callResult.value
+  }
+
+  callResult = contract.try_getCurrentSegment()
+  if (callResult.reverted) {
+    log.info('getCurrentSegment call reverted', [])
+  } else {
+    game.currentSegment = callResult.value
+  }
+  
   let segmentCounter = game.segmentCounter;
   if (segmentCounter.length - 1 < game.currentSegment.toI32()) {
     segmentCounter.push(BigInt.fromI32(1))
@@ -44,7 +57,12 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
   let game = Game.load(admin)
   game.totalGamePrincipal = event.params.totalGamePrincipal
   game.totalGameInterest = event.params.totalGameInterest
-  game.currentSegment = contract.getCurrentSegment()
+  let callResult = contract.try_getCurrentSegment()
+  if (callResult.reverted) {
+    log.info('getCurrentSegment call reverted', [])
+  } else {
+    game.currentSegment = callResult.value
+  }
   game.redeemed = true
   game.rewards = event.params.rewards;
   game.additionalIncentives = event.params.totalIncentiveAmount;
@@ -60,7 +78,12 @@ export function handleJoinedGame(event: JoinedGame): void {
     player.canRejoin = false;
   }
   player.address = address
-  player.mostRecentSegmentPaid = contract.getCurrentSegment()
+  let callResult = contract.try_getCurrentSegment()
+  if (callResult.reverted) {
+    log.info('getCurrentSegment call reverted', [])
+  } else {
+    player.mostRecentSegmentPaid = callResult.value
+  }
   player.amountPaid = event.params.amount
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
@@ -127,7 +150,13 @@ export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
     let player = Player.load(winners[i].toHex())
-    let playerInfo = contract.players(winners[i])
+    let playerInfo: Contract__playersResult
+    let callResult = contract.try_players(winners[i])
+    if (callResult.reverted) {
+      log.info('players call reverted', [])
+    } else {
+      playerInfo = callResult.value
+    }
     if (playerInfo.value2) {
       gameWinners.push(player.id)
     }
@@ -149,13 +178,26 @@ export function handleWithdrawal(event: Withdrawal): void {
 
 export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   let contract = Contract.bind(event.address);
-  let currentSegment = contract.getCurrentSegment()
+  let currentSegment = BigInt.fromI32(0);
+  let callResult = contract.try_getCurrentSegment()
+  if (callResult.reverted) {
+    log.info('getCurrentSegment call reverted', [])
+  } else {
+    currentSegment = callResult.value
+  }
   let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
   let game = Game.load(admin)
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
-  let playerInfo = contract.players(event.params.player)
+  let playerInfo: Contract__playersResult
+  let playerCallResult = contract.try_players(event.params.player)
+  if (playerCallResult.reverted) {
+    log.info('players call reverted', [])
+  } else {
+    playerInfo = playerCallResult.value
+  }
+
   gameDropOuts.push(player.id)
   game.dropOuts = gameDropOuts
   game.totalDropouts = BigInt.fromI32(gameDropOuts.length)
