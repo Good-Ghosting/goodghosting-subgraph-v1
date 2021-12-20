@@ -105,6 +105,15 @@ export class Game extends Entity {
     this.set("rewards", Value.fromBigInt(value));
   }
 
+  get curveRewards(): BigInt {
+    let value = this.get("curveRewards");
+    return value.toBigInt();
+  }
+
+  set curveRewards(value: BigInt) {
+    this.set("curveRewards", Value.fromBigInt(value));
+  }
+
   get segmentCounter(): Array<BigInt> {
     let value = this.get("segmentCounter");
     return value.toBigIntArray();
@@ -251,6 +260,15 @@ export class Player extends Entity {
 
   set playerReward(value: BigInt) {
     this.set("playerReward", Value.fromBigInt(value));
+  }
+
+  get playerCurveReward(): BigInt {
+    let value = this.get("playerCurveReward");
+    return value.toBigInt();
+  }
+
+  set playerCurveReward(value: BigInt) {
+    this.set("playerCurveReward", Value.fromBigInt(value));
   }
 
   get additionalPlayerReward(): BigInt {
