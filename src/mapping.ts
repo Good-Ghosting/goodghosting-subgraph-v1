@@ -213,6 +213,7 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
     }
   }
   game.segmentCounter = segmentCounter;
+  game.currentSegment = currentSegment;
   game.save();
 
   player.withdrawn = true;
