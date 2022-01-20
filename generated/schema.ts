@@ -105,6 +105,33 @@ export class Game extends Entity {
     this.set("rewards", Value.fromBigInt(value));
   }
 
+  get earlyWithdrawFeePercent(): BigInt {
+    let value = this.get("earlyWithdrawFeePercent");
+    return value.toBigInt();
+  }
+
+  set earlyWithdrawFeePercent(value: BigInt) {
+    this.set("earlyWithdrawFeePercent", Value.fromBigInt(value));
+  }
+
+  get segmentPayment(): BigInt {
+    let value = this.get("segmentPayment");
+    return value.toBigInt();
+  }
+
+  set segmentPayment(value: BigInt) {
+    this.set("segmentPayment", Value.fromBigInt(value));
+  }
+
+  get adminFeePercent(): BigInt {
+    let value = this.get("adminFeePercent");
+    return value.toBigInt();
+  }
+
+  set adminFeePercent(value: BigInt) {
+    this.set("adminFeePercent", Value.fromBigInt(value));
+  }
+
   get segmentCounter(): Array<BigInt> {
     let value = this.get("segmentCounter");
     return value.toBigIntArray();

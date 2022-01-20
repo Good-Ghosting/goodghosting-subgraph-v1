@@ -7,6 +7,9 @@ lastSegment: BigInt!
 totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 rewards: BigInt!
+earlyWithdrawFeePercent: BigInt!
+segmentPayment: BigInt!
+adminFeePercent: BigInt!
 segmentCounter: [BigInt!]!
 additionalIncentives: BigInt!
 redeemed: Boolean!

@@ -105,6 +105,9 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
     game.segmentCounter = new Array<BigInt>();
+    game.segmentPayment = contract.segmentPayment();
+    game.adminFeePercent = BigInt.fromI32(contract.customFee());
+    game.earlyWithdrawFeePercent = BigInt.fromI32(contract.earlyWithdrawalFee());
     game.firstSegmentStart = contract.firstSegmentStart()
     game.segmentLength = contract.segmentLength()
     game.redeemed = false
