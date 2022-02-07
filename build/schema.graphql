@@ -8,6 +8,9 @@ totalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 rewards: BigInt!
 curveRewards: BigInt!
+earlyWithdrawFeePercent: BigInt!
+segmentPayment: BigInt!
+adminFeePercent: BigInt!
 segmentCounter: [BigInt!]!
 additionalIncentives: BigInt!
 redeemed: Boolean!

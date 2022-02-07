@@ -66,7 +66,6 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
   game.redeemed = true
   game.rewards = event.params.rewards;
   game.curveRewards = event.params.curveRewards;
-
   game.additionalIncentives = event.params.totalIncentiveAmount;
   game.save()
 }
@@ -90,7 +89,6 @@ export function handleJoinedGame(event: JoinedGame): void {
   player.withdrawAmount = BigInt.fromI32(0);
   player.playerReward = BigInt.fromI32(0);
   player.playerCurveReward = BigInt.fromI32(0);
-
   player.additionalPlayerReward = BigInt.fromI32(0);
 
   player.withdrawn = false;
@@ -110,6 +108,9 @@ export function handleJoinedGame(event: JoinedGame): void {
     game.winners = new Array<string>();
     game.dropOuts = new Array<string>();
     game.segmentCounter = new Array<BigInt>();
+    game.segmentPayment = contract.segmentPayment();
+    game.adminFeePercent = contract.customFee();
+    game.earlyWithdrawFeePercent = contract.earlyWithdrawalFee();
     game.firstSegmentStart = contract.firstSegmentStart()
     game.segmentLength = contract.segmentLength()
     game.redeemed = false
@@ -177,7 +178,6 @@ export function handleWithdrawal(event: Withdrawal): void {
   player.withdrawn = true;
   player.playerReward = event.params.playerReward;
   player.playerCurveReward = event.params.playerCurveReward;
-
   player.additionalPlayerReward = event.params.playerIncentive;
   player.withdrawAmount = event.params.amount
   player.save()
@@ -220,6 +220,7 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
     }
   }
   game.segmentCounter = segmentCounter;
+  game.currentSegment = currentSegment;
   game.save();
 
   player.withdrawn = true;
