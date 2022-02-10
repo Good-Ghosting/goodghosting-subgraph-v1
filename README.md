@@ -2,7 +2,11 @@
 This subgraph dynamically tracks the new players joining the game, the interest generated in the game, if an player performs an early withdraw etc.
 
 ## Setup
-Till we have support for unified subgraph use the ```subgraph/v1``` branch
+Till we have support for unified subgraph use the ```subgraph/v1``` branch for Aave and Moola pools. For Curve pools, use the branch `feat/curve-integration`
+
+
+
+
 
 After cloning the repository run ```yarn install```
 
