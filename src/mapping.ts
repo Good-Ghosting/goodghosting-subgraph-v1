@@ -21,8 +21,8 @@ export function handleDeposit(event: Deposit): void {
   player.mostRecentSegmentPaid = event.params.segment
   player.amountPaid = player.amountPaid + event.params.amount
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let admin = event.address
+  let game = Game.load(admin.toHex())
   let callResult = contract.try_totalGamePrincipal()
   if (callResult.reverted) {
     log.info('totalGamePrincipal call reverted', [])
@@ -53,8 +53,8 @@ export function handleDeposit(event: Deposit): void {
 export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExternalPool): void {
   let contract = Contract.bind(event.address);
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let admin = event.address
+  let game = Game.load(admin.toHex())
   game.totalGamePrincipal = event.params.totalGamePrincipal
   game.totalGameInterest = event.params.totalGameInterest
   let callResult = contract.try_getCurrentSegment()
@@ -91,11 +91,11 @@ export function handleJoinedGame(event: JoinedGame): void {
 
   player.withdrawn = false;
 
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let admin = event.address
+  let game = Game.load(admin.toHex())
 
   if (game == null) {
-    game = new Game(admin)
+    game = new Game(admin.toHex())
     game.players = new Array<string>();
     game.totalGamePrincipal = event.params.amount
     game.totalGameInterest = BigInt.fromI32(0);
@@ -147,8 +147,8 @@ export function handleUnpaused(event: Unpaused): void { }
 
 export function handleWinnersAnnouncement(event: WinnersAnnouncement): void {
   let contract = Contract.bind(event.address);
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let admin = event.address
+  let game = Game.load(admin.toHex())
   let gameWinners = game.winners
   let winners = event.params.winners
   for (var i = 0; i < winners.length; i++) {
@@ -188,8 +188,8 @@ export function handleEarlyWithdrawal(event: EarlyWithdrawal): void {
   } else {
     currentSegment = callResult.value
   }
-  let admin = '0x0fFfBe0ABfE89298376A2E3C04bC0AD22618A48e'
-  let game = Game.load(admin)
+  let admin = event.address
+  let game = Game.load(admin.toHex())
   let address = event.params.player
   let gameDropOuts = game.dropOuts
   let player = Player.load(address.toHex())
