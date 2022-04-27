@@ -128,6 +128,10 @@ export class FundsRedeemedFromExternalPool__Params {
   get totalIncentiveAmount(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
+
+  get originalTotalGamePrincipal(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
 }
 
 export class JoinedGame extends ethereum.Event {
@@ -747,6 +751,29 @@ export class Contract extends ethereum.SmartContract {
     let result = super.tryCall(
       "maxPlayersCount",
       "maxPlayersCount():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  originalTotalGamePrincipal(): BigInt {
+    let result = super.call(
+      "originalTotalGamePrincipal",
+      "originalTotalGamePrincipal():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_originalTotalGamePrincipal(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "originalTotalGamePrincipal",
+      "originalTotalGamePrincipal():(uint256)",
       []
     );
     if (result.reverted) {

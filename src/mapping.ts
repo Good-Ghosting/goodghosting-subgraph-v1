@@ -54,6 +54,7 @@ export function handleFundsRedeemedFromExternalPool(event: FundsRedeemedFromExte
 
   let game = Game.load(event.address.toHex())
   game.totalGamePrincipal = event.params.totalGamePrincipal
+  game.originalTotalGamePrincipal = event.params.originalTotalGamePrincipal
   game.totalGameInterest = event.params.totalGameInterest
   let callResult = contract.try_getCurrentSegment()
   if (callResult.reverted) {
@@ -97,6 +98,7 @@ export function handleJoinedGame(event: JoinedGame): void {
     game = new Game(event.address.toHex())
     game.players = new Array<string>();
     game.totalGamePrincipal = event.params.amount
+    game.originalTotalGamePrincipal = BigInt.fromI32(0);
     game.totalGameInterest = BigInt.fromI32(0);
     game.rewards = BigInt.fromI32(0);
     game.curveRewards = BigInt.fromI32(0);

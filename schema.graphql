@@ -5,6 +5,7 @@ segmentLength: BigInt!
 currentSegment: BigInt!
 lastSegment: BigInt!
 totalGamePrincipal: BigInt!
+originalTotalGamePrincipal: BigInt!
 totalGameInterest: BigInt!
 rewards: BigInt!
 curveRewards: BigInt!

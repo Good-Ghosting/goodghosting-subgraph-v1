@@ -194,6 +194,12 @@
         "internalType": "uint256",
         "name": "totalIncentiveAmount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "originalTotalGamePrincipal",
+        "type": "uint256"
       }
     ],
     "name": "FundsRedeemedFromExternalPool",
@@ -608,6 +614,19 @@
   {
     "inputs": [],
     "name": "maxPlayersCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "originalTotalGamePrincipal",
     "outputs": [
       {
         "internalType": "uint256",

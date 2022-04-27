@@ -87,6 +87,15 @@ export class Game extends Entity {
     this.set("totalGamePrincipal", Value.fromBigInt(value));
   }
 
+  get originalTotalGamePrincipal(): BigInt {
+    let value = this.get("originalTotalGamePrincipal");
+    return value.toBigInt();
+  }
+
+  set originalTotalGamePrincipal(value: BigInt) {
+    this.set("originalTotalGamePrincipal", Value.fromBigInt(value));
+  }
+
   get totalGameInterest(): BigInt {
     let value = this.get("totalGameInterest");
     return value.toBigInt();

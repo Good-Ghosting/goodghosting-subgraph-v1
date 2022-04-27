@@ -43,6 +43,6 @@ dataSources:
           handler: handleWithdrawal
         - event: EarlyWithdrawal(indexed address,uint256,uint256)
           handler: handleEarlyWithdrawal
-        - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: FundsRedeemedFromExternalPool(uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleFundsRedeemedFromExternalPool
       file: ./src/mapping.ts
