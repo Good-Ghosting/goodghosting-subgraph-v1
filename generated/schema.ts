@@ -96,31 +96,13 @@ export class Game extends Entity {
     this.set("totalGameInterest", Value.fromBigInt(value));
   }
 
-  get segmentPayment(): BigInt {
-    let value = this.get("segmentPayment");
+  get rewards(): BigInt {
+    let value = this.get("rewards");
     return value.toBigInt();
   }
 
-  set segmentPayment(value: BigInt) {
-    this.set("segmentPayment", Value.fromBigInt(value));
-  }
-
-  get adminFeeAmount(): BigInt {
-    let value = this.get("adminFeeAmount");
-    return value.toBigInt();
-  }
-
-  set adminFeeAmount(value: BigInt) {
-    this.set("adminFeeAmount", Value.fromBigInt(value));
-  }
-
-  get adminFeePercent(): BigInt {
-    let value = this.get("adminFeePercent");
-    return value.toBigInt();
-  }
-
-  set adminFeePercent(value: BigInt) {
-    this.set("adminFeePercent", Value.fromBigInt(value));
+  set rewards(value: BigInt) {
+    this.set("rewards", Value.fromBigInt(value));
   }
 
   get earlyWithdrawFeePercent(): BigInt {
@@ -132,13 +114,31 @@ export class Game extends Entity {
     this.set("earlyWithdrawFeePercent", Value.fromBigInt(value));
   }
 
-  get rewards(): BigInt {
-    let value = this.get("rewards");
+  get segmentPayment(): BigInt {
+    let value = this.get("segmentPayment");
     return value.toBigInt();
   }
 
-  set rewards(value: BigInt) {
-    this.set("rewards", Value.fromBigInt(value));
+  set segmentPayment(value: BigInt) {
+    this.set("segmentPayment", Value.fromBigInt(value));
+  }
+
+  get adminFeePercent(): BigInt {
+    let value = this.get("adminFeePercent");
+    return value.toBigInt();
+  }
+
+  set adminFeePercent(value: BigInt) {
+    this.set("adminFeePercent", Value.fromBigInt(value));
+  }
+
+  get segmentCounter(): Array<BigInt> {
+    let value = this.get("segmentCounter");
+    return value.toBigIntArray();
+  }
+
+  set segmentCounter(value: Array<BigInt>) {
+    this.set("segmentCounter", Value.fromBigIntArray(value));
   }
 
   get additionalIncentives(): BigInt {
@@ -166,6 +166,15 @@ export class Game extends Entity {
 
   set withdrawAmountAllocated(value: boolean) {
     this.set("withdrawAmountAllocated", Value.fromBoolean(value));
+  }
+
+  get totalDropouts(): BigInt {
+    let value = this.get("totalDropouts");
+    return value.toBigInt();
+  }
+
+  set totalDropouts(value: BigInt) {
+    this.set("totalDropouts", Value.fromBigInt(value));
   }
 
   get players(): Array<string> {
