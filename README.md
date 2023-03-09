@@ -1,4 +1,4 @@
-# GoodGhosting
+# HaloFi (prev. GoodGhosting)
 This subgraph dynamically tracks the new players joining the game, the interest generated in the game, if an player performs an early withdraw etc.
 
 ## Setup
